@@ -23,15 +23,32 @@ function getMessage(score) {
   return "🌟 Perfect! This plant should thrive beautifully!";
 }
 
-// Animate score from 0 to target
+// Animate score from 0 to target + add fade/slide for messages
 function animateScore(targetScore) {
   let current = 0;
   scoreDiv.textContent = "0%";
+  scoreDiv.classList.remove("pulse", "bounce");
+  messageDiv.classList.remove("fade-in", "show");
+  reasonDiv.classList.remove("fade-in", "show");
+  tipDiv.classList.remove("fade-in", "show");
+
   const interval = setInterval(() => {
     current++;
     if(current > targetScore) current = targetScore;
     scoreDiv.textContent = current + "%";
-    if(current === targetScore) clearInterval(interval);
+
+    // Pulse during counting
+    scoreDiv.classList.add("pulse");
+
+    if(current === targetScore) {
+      clearInterval(interval);
+      // Bounce final
+      scoreDiv.classList.add("bounce");
+      // Fade-in messages
+      messageDiv.classList.add("fade-in", "show");
+      reasonDiv.classList.add("fade-in", "show");
+      tipDiv.classList.add("fade-in", "show");
+    }
   }, 15);
 }
 
@@ -40,7 +57,7 @@ function calculate() {
   const userWater = parseInt(document.getElementById("water").value);
   const userLight = parseInt(document.getElementById("light").value);
 
-  let score = 100; // Start at 100 to allow perfect score
+  let score = 100; // allow perfect score
   let reason = "";
 
   const waterDiff = Math.abs(userWater - plant.water);
@@ -58,10 +75,8 @@ function calculate() {
 
   score = Math.max(0, Math.min(100, score));
 
-  // Animate score
   animateScore(score);
 
-  // Set messages
   messageDiv.textContent = getMessage(score);
   reasonDiv.textContent = reason ? `Main issue: ${reason}` : "Nothing critical";
   tipDiv.textContent = plant.tip;
