@@ -1,49 +1,172 @@
 const plants = [
-  { name: "Snake Plant", water: 0, light: 1, temp: 20, tip: "Very hardy, water sparingly. Low light friendly." },
-  { name: "Pothos", water: 1, light: 1, temp: 22, tip: "Thrives in most conditions. Trim leaves occasionally." },
-  { name: "Spider Plant", water: 1, light: 2, temp: 22, tip: "Avoid direct sun. Great for hanging baskets." },
-  { name: "ZZ Plant", water: 0, light: 1, temp: 20, tip: "Tolerates neglect. Avoid overwatering." },
-  { name: "Fiddle Leaf Fig", water: 2, light: 2, temp: 24, tip: "Needs bright indirect light. Rotate regularly." },
-  { name: "Rubber Plant", water: 1, light: 2, temp: 22, tip: "Can handle low light. Wipe leaves occasionally." },
-  { name: "Peace Lily", water: 2, light: 1, temp: 22, tip: "Prefers medium light. Flowers in low light." },
-  { name: "Monstera Deliciosa", water: 1, light: 2, temp: 22, tip: "Likes bright indirect light. Support stems as it grows." },
-  { name: "Dracaena", water: 1, light: 1, temp: 21, tip: "Avoid overwatering. Thrives in low light." },
-  { name: "Calathea", water: 2, light: 1, temp: 22, tip: "Keep soil moist. Sensitive to direct sun." },
-  { name: "Aloe Vera", water: 0, light: 2, temp: 23, tip: "Needs bright light. Let soil dry between watering." },
-  { name: "Cactus", water: 0, light: 3, temp: 28, tip: "Water rarely. Loves sun." },
-  { name: "Boston Fern", water: 2, light: 1, temp: 20, tip: "Keep soil moist. Prefers indirect light." },
-  { name: "Chinese Evergreen", water: 1, light: 1, temp: 22, tip: "Low maintenance. Avoid direct sun." },
-  { name: "Neon Pothos", water: 1, light: 2, temp: 22, tip: "Bright indirect light improves leaf color." },
-  { name: "Hoya", water: 1, light: 2, temp: 23, tip: "Likes bright light. Let soil dry between watering." },
-  { name: "African Violet", water: 2, light: 2, temp: 21, tip: "Keep soil moist. Avoid wetting leaves." },
-  { name: "Croton", water: 2, light: 2, temp: 24, tip: "Needs bright light to keep leaf colors vivid." },
-  { name: "Prayer Plant", water: 2, light: 1, temp: 22, tip: "Keep soil consistently moist. Low light tolerant." },
-  { name: "Kalanchoe", water: 0, light: 2, temp: 23, tip: "Let soil dry between watering. Needs bright light." },
-  { name: "Ponytail Palm", water: 0, light: 2, temp: 25, tip: "Store water in bulb. Bright light preferred." },
-  { name: "String of Pearls", water: 0, light: 2, temp: 23, tip: "Water sparingly. Likes bright indirect light." },
-  { name: "Cast Iron Plant", water: 1, light: 1, temp: 21, tip: "Extremely hardy. Low maintenance." },
-  { name: "Corn Plant", water: 1, light: 1, temp: 22, tip: "Avoid direct sunlight. Moderate watering." },
-  { name: "Arrowhead Plant", water: 1, light: 2, temp: 22, tip: "Bright indirect light. Keep soil slightly moist." },
-  { name: "Silver Pothos", water: 1, light: 1, temp: 22, tip: "Low light tolerant. Water moderately." },
-  { name: "Bamboo Palm", water: 1, light: 1, temp: 21, tip: "Prefers low light. Keep soil evenly moist." },
-  { name: "Fittonia", water: 2, light: 1, temp: 22, tip: "Keep soil moist. Sensitive to dryness." },
-  { name: "Anthurium", water: 2, light: 2, temp: 23, tip: "Needs bright indirect light. Water regularly." },
-  { name: "Philodendron", water: 1, light: 1, temp: 22, tip: "Tolerates low light. Moderate watering." },
-  { name: "Areca Palm", water: 1, light: 2, temp: 23, tip: "Likes bright light. Water consistently." },
-  { name: "Chinese Money Plant", water: 1, light: 1, temp: 22, tip: "Easy to grow. Avoid overwatering." },
-  { name: "Dragon Tree", water: 1, light: 1, temp: 21, tip: "Low maintenance. Moderate watering." },
-  { name: "Silver Queen Aglaonema", water: 1, light: 1, temp: 21, tip: "Thrives in low light. Keep soil moist." },
-  { name: "Jade Plant", water: 0, light: 2, temp: 24, tip: "Water sparingly. Needs bright light." },
-  { name: "Bird of Paradise", water: 2, light: 2, temp: 25, tip: "Needs bright light. Water regularly." },
-  { name: "Philodendron Brasil", water: 1, light: 1, temp: 22, tip: "Low maintenance. Moderate watering." },
-  { name: "Peace Lily Dwarf", water: 2, light: 1, temp: 22, tip: "Medium light preferred. Keep soil moist." },
-  { name: "Yucca", water: 0, light: 2, temp: 24, tip: "Water sparingly. Likes bright light." },
-  { name: "Nerve Plant", water: 2, light: 1, temp: 22, tip: "Keep soil moist. Low light tolerant." },
-  { name: "Begonia", water: 2, light: 2, temp: 23, tip: "Prefers bright indirect light. Keep soil moist." },
-  { name: "English Ivy", water: 1, light: 1, temp: 22, tip: "Moderate light. Keep soil evenly moist." },
-  { name: "Aluminum Plant", water: 1, light: 1, temp: 21, tip: "Low light tolerant. Water moderately." },
-  { name: "Christmas Cactus", water: 0, light: 2, temp: 22, tip: "Water sparingly. Likes indirect light." },
-  { name: "Pink Quill Plant", water: 2, light: 2, temp: 23, tip: "Bright indirect light. Keep soil moist." },
-  { name: "Fishbone Cactus", water: 0, light: 2, temp: 24, tip: "Water sparingly. Bright light preferred." },
-  { name: "Pilea Peperomioides", water: 1, light: 2, temp: 22, tip: "Moderate light. Let soil dry slightly between waterings." }
+  {
+    name: { en: "Snake Plant", fr: "Sansevieria" },
+    water: 0,
+    light: 1,
+    temp: 20,
+    tip: {
+      en: "Very hardy, water sparingly. Low light friendly.",
+      fr: "Très résistante. Arrosez très peu. Supporte la faible luminosité."
+    }
+  },
+  {
+    name: { en: "Pothos", fr: "Pothos" },
+    water: 1,
+    light: 1,
+    temp: 22,
+    tip: {
+      en: "Thrives in most conditions. Trim leaves occasionally.",
+      fr: "S’adapte facilement. Taillez de temps en temps."
+    }
+  },
+  {
+    name: { en: "Spider Plant", fr: "Plante araignée" },
+    water: 1,
+    light: 2,
+    temp: 22,
+    tip: {
+      en: "Avoid direct sun. Great for hanging baskets.",
+      fr: "Évitez le soleil direct. Parfaite en suspension."
+    }
+  },
+  {
+    name: { en: "ZZ Plant", fr: "Plante ZZ" },
+    water: 0,
+    light: 1,
+    temp: 20,
+    tip: {
+      en: "Tolerates neglect. Avoid overwatering.",
+      fr: "Tolère l’oubli. N’arrosez pas trop."
+    }
+  },
+  {
+    name: { en: "Fiddle Leaf Fig", fr: "Figuier lyre" },
+    water: 2,
+    light: 2,
+    temp: 24,
+    tip: {
+      en: "Needs bright indirect light. Rotate regularly.",
+      fr: "A besoin de lumière vive indirecte. Tournez-la régulièrement."
+    }
+  },
+  {
+    name: { en: "Rubber Plant", fr: "Plante caoutchouc" },
+    water: 1,
+    light: 2,
+    temp: 22,
+    tip: {
+      en: "Can handle low light. Wipe leaves occasionally.",
+      fr: "Supporte la faible lumière. Nettoyez les feuilles."
+    }
+  },
+  {
+    name: { en: "Peace Lily", fr: "Lys de la paix" },
+    water: 2,
+    light: 1,
+    temp: 22,
+    tip: {
+      en: "Prefers medium light. Flowers in low light.",
+      fr: "Préfère une lumière modérée. Fleurit même en faible lumière."
+    }
+  },
+  {
+    name: { en: "Monstera Deliciosa", fr: "Monstera deliciosa" },
+    water: 1,
+    light: 2,
+    temp: 22,
+    tip: {
+      en: "Likes bright indirect light. Support stems as it grows.",
+      fr: "Aime la lumière vive indirecte. Soutenez les tiges."
+    }
+  },
+  {
+    name: { en: "Dracaena", fr: "Dracaena" },
+    water: 1,
+    light: 1,
+    temp: 21,
+    tip: {
+      en: "Avoid overwatering. Thrives in low light.",
+      fr: "Évitez l’excès d’eau. S’épanouit en faible lumière."
+    }
+  },
+  {
+    name: { en: "Calathea", fr: "Calathéa" },
+    water: 2,
+    light: 1,
+    temp: 22,
+    tip: {
+      en: "Keep soil moist. Sensitive to direct sun.",
+      fr: "Gardez le sol humide. Sensible au soleil direct."
+    }
+  },
+  {
+    name: { en: "Aloe Vera", fr: "Aloe vera" },
+    water: 0,
+    light: 2,
+    temp: 23,
+    tip: {
+      en: "Needs bright light. Let soil dry between watering.",
+      fr: "A besoin de lumière vive. Laissez sécher la terre."
+    }
+  },
+  {
+    name: { en: "Cactus", fr: "Cactus" },
+    water: 0,
+    light: 3,
+    temp: 28,
+    tip: {
+      en: "Water rarely. Loves sun.",
+      fr: "Arrosez très rarement. Aime le soleil."
+    }
+  },
+  {
+    name: { en: "Boston Fern", fr: "Fougère de Boston" },
+    water: 2,
+    light: 1,
+    temp: 20,
+    tip: {
+      en: "Keep soil moist. Prefers indirect light.",
+      fr: "Gardez le sol humide. Préfère la lumière indirecte."
+    }
+  },
+  {
+    name: { en: "Chinese Evergreen", fr: "Aglaonema" },
+    water: 1,
+    light: 1,
+    temp: 22,
+    tip: {
+      en: "Low maintenance. Avoid direct sun.",
+      fr: "Facile d’entretien. Évitez le soleil direct."
+    }
+  },
+  {
+    name: { en: "Jade Plant", fr: "Plante de jade" },
+    water: 0,
+    light: 2,
+    temp: 24,
+    tip: {
+      en: "Water sparingly. Needs bright light.",
+      fr: "Arrosez peu. A besoin de lumière vive."
+    }
+  },
+  {
+    name: { en: "Yucca", fr: "Yucca" },
+    water: 0,
+    light: 2,
+    temp: 24,
+    tip: {
+      en: "Water sparingly. Likes bright light.",
+      fr: "Arrosez rarement. Aime la lumière vive."
+    }
+  },
+  {
+    name: { en: "Pilea Peperomioides", fr: "Plante à monnaie chinoise" },
+    water: 1,
+    light: 2,
+    temp: 22,
+    tip: {
+      en: "Moderate light. Let soil dry slightly between waterings.",
+      fr: "Lumière modérée. Laissez sécher légèrement la terre."
+    }
+  }
 ];
