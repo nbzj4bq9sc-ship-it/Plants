@@ -95,7 +95,7 @@ shareBtn.addEventListener("click", () => {
     navigator.share({
       title: 'Will my plant survive?',
       text: text,
-      url: 'https://your-site-url.com',
+      url: 'https://nbzj4bq9sc-ship-it.github.io/Plants/',
     }).catch(err => console.log('Share cancelled', err));
   } else {
     navigator.clipboard.writeText(text).then(() => {
