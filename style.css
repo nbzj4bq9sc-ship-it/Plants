@@ -118,11 +118,18 @@ button:hover {
   background: #b6d4e8;
 }
 
-.disclaimer, .credits {
+.disclaimer {
   text-align: center;
   font-size: 12px;
   color: #777;
   margin-top: 20px;
+}
+
+.credits {
+  text-align: center;
+  font-size: 10px; /* plus petite police */
+  color: #777;
+  margin-top: 10px;
 }
 
 /* Animations */
