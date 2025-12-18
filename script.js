@@ -1,37 +1,63 @@
+let currentLang = "en";
+
+const texts = {
+  en: {
+    title: "Will my plant survive?",
+    subtitle: "A quick estimation. Be honest. We will.",
+    plant: "Plant",
+    water: "Watering (times per week)",
+    light: "Light",
+    temp: "Temperature (°C)",
+    button: "Face the truth",
+    lights: ["Low light", "Medium light", "Bright light"],
+    share: "Share my plant skills 😎",
+    shareText: (name, score) =>
+      `My ${name} has a ${score} chance of survival! 🌿\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`
+  },
+  fr: {
+    title: "Ma plante va-t-elle survivre ?",
+    subtitle: "Une estimation rapide. Soyez honnête. Nous le serons.",
+    plant: "Plante",
+    water: "Arrosage (fois par semaine)",
+    light: "Lumière",
+    temp: "Température (°C)",
+    button: "Voir la vérité",
+    lights: ["Faible lumière", "Lumière moyenne", "Lumière vive"],
+    share: "Partager mes talents de jardinier 😎",
+    shareText: (name, score) =>
+      `Ma ${name} a ${score} de chances de survie 🌿\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`
+  }
+};
+
 const plantSelect = document.getElementById("plantSelect");
+const lightSelect = document.getElementById("light");
+const shareBtn = document.getElementById("shareBtn");
 const scoreDiv = document.querySelector(".score");
 const emojiDiv = document.querySelector(".emoji");
 const messageDiv = document.querySelector(".message");
 const reasonDiv = document.querySelector(".reason");
 const tipDiv = document.querySelector(".tip");
-const resultDiv = document.getElementById("result");
-const shareBtn = document.getElementById("shareBtn");
 const tempSlider = document.getElementById("temperature");
 const tempValue = document.getElementById("tempValue");
-const langBtn = document.getElementById("langBtn");
 
-let currentLang = "en";
+function applyLanguage() {
+  document.querySelector("h1").textContent = texts[currentLang].title;
+  document.querySelector(".subtitle").textContent = texts[currentLang].subtitle;
+  document.querySelectorAll("label")[0].textContent = texts[currentLang].plant;
+  document.querySelectorAll("label")[1].textContent = texts[currentLang].water;
+  document.querySelectorAll("label")[2].textContent = texts[currentLang].light;
+  document.querySelectorAll("label")[3].textContent = texts[currentLang].temp;
+  document.querySelector("button").textContent = texts[currentLang].button;
+  shareBtn.textContent = texts[currentLang].share;
 
-/* ========= TRANSLATIONS ========= */
+  lightSelect.innerHTML = "";
+  texts[currentLang].lights.forEach((l, i) => {
+    const opt = document.createElement("option");
+    opt.value = i + 1;
+    opt.textContent = l;
+    lightSelect.appendChild(opt);
+  });
 
-const t = {
-  en: {
-    light: ["Low", "Medium", "Bright"],
-    share: "Share my plant skills 😎",
-    shareText: (plant, score) =>
-      `My ${plant} has a ${score} chance of survival!\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`
-  },
-  fr: {
-    light: ["Faible", "Moyenne", "Forte"],
-    share: "Partager mes talents de jardinier 😎",
-    shareText: (plant, score) =>
-      `Ma ${plant} a ${score} de chance de survie !\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`
-  }
-};
-
-/* ========= INIT ========= */
-
-function populatePlants() {
   plantSelect.innerHTML = "";
   plants.forEach((p, i) => {
     const opt = document.createElement("option");
@@ -41,78 +67,35 @@ function populatePlants() {
   });
 }
 
-function translateLight() {
-  const options = document.querySelectorAll("#light option");
-  options.forEach((opt, i) => {
-    opt.textContent = t[currentLang].light[i];
-  });
-}
-
-langBtn.onclick = () => {
+document.querySelector(".lang-switch").addEventListener("click", () => {
   currentLang = currentLang === "en" ? "fr" : "en";
-  langBtn.textContent = currentLang === "en" ? "FR" : "EN";
-  populatePlants();
-  translateLight();
-};
+  document.querySelector(".lang-switch").textContent =
+    currentLang.toUpperCase();
+  applyLanguage();
+});
 
-populatePlants();
-translateLight();
-
-tempSlider.oninput = () => {
+tempSlider.addEventListener("input", () => {
   tempValue.textContent = `${tempSlider.value}°C`;
-};
+});
 
-/* ========= SCORE ========= */
+applyLanguage();
 
-function getEmoji(score) {
-  if (score < 25) return "💀";
-  if (score < 50) return "☹️";
-  if (score < 75) return "⚠️";
-  if (score < 90) return "🌿";
-  return "🌟";
-}
-
-function calculate() {
-  const plant = plants[plantSelect.value];
-  const water = +document.getElementById("water").value;
-  const light = +document.getElementById("light").value;
-  const temp = +tempSlider.value;
-
-  let score = 100;
-  score -= Math.abs(water - plant.water) * 20;
-  score -= Math.abs(light - plant.light) * 15;
-  if (Math.abs(temp - plant.temp) > 5) score -= 15;
-  score = Math.max(0, Math.min(100, score));
-
-  scoreDiv.textContent = score + "%";
-  emojiDiv.textContent = getEmoji(score);
-  messageDiv.textContent = score >= 75 ? "Looking good!" : "Attention needed.";
-  reasonDiv.textContent = "";
-  tipDiv.textContent = plant.tip[currentLang];
-
-  resultDiv.classList.remove("hidden");
-  shareBtn.classList.remove("hidden");
-}
-
-/* ========= SHARE (NATIVE) ========= */
-
-shareBtn.onclick = async () => {
+/* Share */
+shareBtn.addEventListener("click", () => {
   const plant = plants[plantSelect.value];
   const score = scoreDiv.textContent;
-
-  const text = t[currentLang].shareText(
+  const text = texts[currentLang].shareText(
     plant.name[currentLang],
     score
   );
 
   if (navigator.share) {
     navigator.share({
-      title: "Will my plant survive?",
-      text,
-      url: "https://nbzj4bq9sc-ship-it.github.io/Plants/"
+      title: texts[currentLang].title,
+      text
     });
   } else {
     navigator.clipboard.writeText(text);
-    alert("Copied!");
+    alert("Copied to clipboard");
   }
-};
+});
