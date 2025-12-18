@@ -91,6 +91,23 @@ button:hover {
   color: #555;
 }
 
+/* Share button */
+.share-btn {
+  margin-top: 15px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #cde2f0;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.share-btn:hover {
+  background: #b6d4e8;
+}
+
 .disclaimer, .credits {
   text-align: center;
   font-size: 12px;
@@ -124,6 +141,6 @@ button:hover {
   animation: bounce 0.3s ease-in-out;
 }
 
-.message.fade-in, .reason.fade-in, .tip.fade-in {
+.message.fade-in, .reason.fade-in, .tip.fade-in, .share-btn.fade-in {
   animation: fadeIn 0.5s ease-in forwards;
 }
