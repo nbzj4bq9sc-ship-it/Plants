@@ -1,11 +1,37 @@
 const plantSelect = document.getElementById("plantSelect");
+const resultDiv = document.getElementById("result");
+const scoreDiv = document.querySelector(".score");
+const messageDiv = document.querySelector(".message");
+const reasonDiv = document.querySelector(".reason");
 
+// Populate select
 plants.forEach((plant, index) => {
   const option = document.createElement("option");
   option.value = index;
   option.textContent = plant.name;
   plantSelect.appendChild(option);
 });
+
+// Wording by percentage ranges
+function getMessage(score) {
+  if (score === 100) return "🌟 Perfect! This plant will thrive!";
+  if (score >= 75) return "🌿 You’re doing great!";
+  if (score >= 50) return "⚠️ Could be better, watch closely.";
+  if (score >= 25) return "☹️ Not looking good, be careful!";
+  if (score >= 10) return "💀 Danger zone, reconsider your choices.";
+  return "☠️ Deadly! This plant is doomed!";
+}
+
+function animateScore(targetScore) {
+  let current = 0;
+  scoreDiv.textContent = "0%";
+  const interval = setInterval(() => {
+    current++;
+    if(current > targetScore) current = targetScore;
+    scoreDiv.textContent = current + "%";
+    if(current === targetScore) clearInterval(interval);
+  }, 15);
+}
 
 function calculate() {
   const plant = plants[plantSelect.value];
@@ -20,32 +46,22 @@ function calculate() {
 
   if (waterDiff > 0) {
     score -= waterDiff * 20;
-    reason = userWater > plant.water
-      ? "Too much water"
-      : "Not enough water";
+    reason = userWater > plant.water ? "Too much water" : "Not enough water";
   }
 
   if (lightDiff > 0) {
     score -= lightDiff * 15;
-    if (!reason) {
-      reason = userLight > plant.light
-        ? "Too much light"
-        : "Not enough light";
-    }
+    if (!reason) reason = userLight > plant.light ? "Too much light" : "Not enough light";
   }
 
   score = Math.max(0, Math.min(100, score));
 
-  let message = "";
-  if (score >= 70) message = "You’re doing fine 🌿";
-  else if (score >= 40) message = "This might work… keep an eye on it ⚠️";
-  else message = "We’re not gonna lie 💀";
+  // Animate score
+  animateScore(score);
 
-  const result = document.getElementById("result");
-  result.classList.remove("hidden");
-  result.innerHTML = `
-    <div class="score">${score}%</div>
-    <p>${message}</p>
-    <p><strong>Main issue:</strong> ${reason || "Nothing critical"}</p>
-  `;
+  // Set messages
+  messageDiv.textContent = getMessage(score);
+  reasonDiv.textContent = reason ? `Main issue: ${reason}` : "Nothing critical";
+
+  resultDiv.classList.remove("hidden");
 }
