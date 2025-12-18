@@ -96,18 +96,103 @@ function saveHistory(plantIndex, score){
 // Generate share image
 function generateShareImage(){
   const ctx = shareCanvas.getContext("2d");
-  shareCanvas.width = 500;
-  shareCanvas.height = 250;
+  shareCanvas.width = 600;
+  shareCanvas.height = 600;
+
+  // Dégradé pastel de fond
+  const grad = ctx.createLinearGradient(0,0,0,shareCanvas.height);
+  grad.addColorStop(0, "#f6f3ee");
+  grad.addColorStop(1, "#e2dfd5");
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,shareCanvas.width, shareCanvas.height);
+
+  // Carte avec bord arrondi et shadow
+  const cardX = 50, cardY = 50, cardW = 500, cardH = 500;
   ctx.fillStyle = "#fffaf2";
-  ctx.fillRect(0,0,500,250);
-  ctx.fillStyle = "#333";
-  ctx.font = "24px sans-serif";
+  ctx.shadowColor = "rgba(0,0,0,0.1)";
+  ctx.shadowBlur = 15;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 5;
+  roundRect(ctx, cardX, cardY, cardW, cardH, 20, true, false);
+
+  // Reset shadow for text
+  ctx.shadowColor = "transparent";
+
   const plant = plants[plantSelect.value];
-  ctx.fillText(`Plant: ${plant.name}`, 20, 50);
-  ctx.fillText(`Score: ${scoreDiv.textContent}`, 20, 100);
-  ctx.fillText(`${emojiDiv.textContent}`, 20, 150);
-  ctx.fillText(`${tipDiv.textContent}`, 20, 200);
+
+  // Plant Name
+  ctx.fillStyle = "#333";
+  ctx.font = "bold 32px sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText(plant.name, shareCanvas.width/2, cardY + 60);
+
+  // Score
+  ctx.font = "bold 48px sans-serif";
+  ctx.fillText(`${scoreDiv.textContent}`, shareCanvas.width/2, cardY + 140);
+
+  // Emoji
+  ctx.font = "64px sans-serif";
+  ctx.fillText(`${emojiDiv.textContent}`, shareCanvas.width/2, cardY + 230);
+
+  // Water & Light Icons
+  ctx.font = "28px sans-serif";
+  ctx.fillText(`💧 ${plant.water}   ☀️ ${plant.light}`, shareCanvas.width/2, cardY + 300);
+
+  // Tip
+  ctx.font = "italic 20px sans-serif";
+  wrapText(ctx, tipDiv.textContent, shareCanvas.width/2, cardY + 380, 440, 26);
+
+  // Site logo / url en bas droit
+  ctx.font = "14px sans-serif";
+  ctx.fillStyle = "#777";
+  ctx.textAlign = "right";
+  ctx.fillText("https://nbzj4bq9sc-ship-it.github.io/Plants/", cardX + cardW - 10, cardY + cardH - 10);
+
   shareCanvas.classList.add("hidden");
+}
+
+// Helper: Rounded rectangle
+function roundRect(ctx, x, y, width, height, radius, fill, stroke){
+  if (typeof stroke === 'undefined') stroke = true;
+  if (typeof radius === 'undefined') radius = 5;
+  if (typeof radius === 'number') {
+    radius = {tl: radius, tr: radius, br: radius, bl: radius};
+  } else {
+    var defaultRadius = {tl: 0, tr: 0, br: 0, bl: 0};
+    for (var side in defaultRadius) radius[side] = radius[side] || defaultRadius[side];
+  }
+  ctx.beginPath();
+  ctx.moveTo(x + radius.tl, y);
+  ctx.lineTo(x + width - radius.tr, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
+  ctx.lineTo(x + width, y + height - radius.br);
+  ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
+  ctx.lineTo(x + radius.bl, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
+  ctx.lineTo(x, y + radius.tl);
+  ctx.quadraticCurveTo(x, y, x + radius.tl, y);
+  ctx.closePath();
+  if (fill) ctx.fill();
+  if (stroke) ctx.stroke();
+}
+
+// Helper: wrap text for canvas
+function wrapText(context, text, x, y, maxWidth, lineHeight) {
+  var words = text.split(' ');
+  var line = '';
+  for(var n = 0; n < words.length; n++) {
+    var testLine = line + words[n] + ' ';
+    var metrics = context.measureText(testLine);
+    var testWidth = metrics.width;
+    if (testWidth > maxWidth && n > 0) {
+      context.fillText(line, x, y);
+      line = words[n] + ' ';
+      y += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  context.fillText(line, x, y);
 }
 
 // Calculate
