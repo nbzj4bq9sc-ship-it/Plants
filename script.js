@@ -31,14 +31,14 @@ function getEmoji(score){
   return "🌟";
 }
 
-// Precise wording by score and mismatch with humor
+// Simple message by score
 function getMessage(score){
-  if(score <= 10) return "0% chance. This plant is plotting against you!";
-  if(score <= 25) return "25% chance. Might survive a light drizzle of zombies...";
-  if(score <= 50) return "50% chance. Could survive a mild apocalypse!";
-  if(score <= 75) return "75% chance. Strong enough for a zombie weekend!";
-  if(score <= 90) return "90% chance. Nearly apocalypse-proof!";
-  return "100% chance. Survives even a zombie invasion!";
+  if(score <= 10) return "Attention needed!";
+  if(score <= 25) return "Needs care!";
+  if(score <= 50) return "Fair condition.";
+  if(score <= 75) return "Good condition.";
+  if(score <= 90) return "Very healthy!";
+  return "Excellent!";
 }
 
 // Animate score
@@ -62,7 +62,7 @@ function animateScore(targetScore) {
       clearInterval(interval);
       scoreDiv.classList.add("bounce");
       messageDiv.textContent = getMessage(targetScore);
-      tipDiv.textContent = getMiniTip(plants[plantSelect.value]);
+      tipDiv.textContent = plants[plantSelect.value].tip;
 
       messageDiv.classList.add("fade-in", "show");
       tipDiv.classList.add("fade-in", "show");
@@ -71,11 +71,6 @@ function animateScore(targetScore) {
       saveHistory(plantSelect.value, targetScore);
     }
   }, 15);
-}
-
-// Mini tip by combination (independent of score)
-function getMiniTip(plant) {
-  return plant.tip;
 }
 
 // Local history
@@ -109,11 +104,11 @@ function calculate() {
   resultDiv.classList.remove("hidden");
 }
 
-// Share button: text + link only, fix double %
+// Share button: simple text + link
 shareBtn.addEventListener("click", () => {
   const plant = plants[plantSelect.value];
-  const score = parseInt(scoreDiv.textContent); // remove double %
-  const shareText = `My ${plant.name} has a ${score}% chance of surviving a zombie apocalypse! 🧟\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`;
+  const score = parseInt(scoreDiv.textContent);
+  const shareText = `My ${plant.name} has a ${score}% chance of survival!\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`;
 
   if (navigator.share) {
     navigator.share({
