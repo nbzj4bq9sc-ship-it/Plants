@@ -69,7 +69,7 @@ function animateScore(targetScore, plant, userWater, userLight, userTemp) {
   emojiDiv.textContent = "🌿";
   scoreDiv.classList.remove("pulse", "bounce");
   messageDiv.classList.remove("fade-in", "show");
-  reasonDiv.classList.remove("fade-in", "show");
+  reasonDiv.classList.remove("fade-in", "show", "hidden"); // ensure visible
   tipDiv.classList.remove("fade-in", "show");
   shareBtn.classList.remove("fade-in", "show", "hidden");
 
@@ -84,7 +84,7 @@ function animateScore(targetScore, plant, userWater, userLight, userTemp) {
       clearInterval(interval);
       scoreDiv.classList.add("bounce");
       messageDiv.textContent = getMessage(targetScore);
-      reasonDiv.textContent = getMainIssue(plant, userWater, userLight, userTemp);
+      reasonDiv.textContent = getMainIssue(plant, userWater, userLight, userTemp); // Main issue precise
       tipDiv.textContent = plant.tip;
 
       messageDiv.classList.add("fade-in", "show");
