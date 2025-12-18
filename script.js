@@ -33,18 +33,18 @@ function getEmoji(score){
   return "🌟";
 }
 
-// Wording by percentage ranges
-function getMessage(score) {
-  if(score <= 10) return "☠️ This plant is doomed… maybe try another one!";
-  if(score <= 25) return "💀 Danger zone! Your plant needs serious attention.";
-  if(score <= 50) return "☹️ Not looking good. Adjust water, light or temp.";
-  if(score <= 75) return "⚠️ Could be better. Keep an eye on it and tweak care.";
-  if(score <= 90) return "🌿 You’re doing well! Just minor tweaks needed.";
-  return "🌟 Perfect! This plant should thrive beautifully!";
+// Precise wording by score and mismatch
+function getMessage(score, reason) {
+  if(score <= 10) return reason ? `Critical issue: ${reason}` : "Critical issues detected!";
+  if(score <= 25) return reason ? `Major concern: ${reason}` : "Major care needed!";
+  if(score <= 50) return reason ? `Attention needed: ${reason}` : "Some care adjustments recommended.";
+  if(score <= 75) return reason ? `Minor tweaks: ${reason}` : "Your plant is mostly okay.";
+  if(score <= 90) return reason ? `Good, minor adjustments: ${reason}` : "Looking good!";
+  return "Perfect! Your plant should thrive!";
 }
 
 // Animate score
-function animateScore(targetScore) {
+function animateScore(targetScore, reason) {
   let current = 0;
   scoreDiv.textContent = "0%";
   emojiDiv.textContent = "🌿";
@@ -65,13 +65,17 @@ function animateScore(targetScore) {
     if(current === targetScore) {
       clearInterval(interval);
       scoreDiv.classList.add("bounce");
+      messageDiv.textContent = getMessage(targetScore, reason);
+      reasonDiv.textContent = reason ? `Main issue: ${reason}` : "No critical issues";
+      tipDiv.textContent = getMiniTip(plants[plantSelect.value]);
+
       messageDiv.classList.add("fade-in", "show");
       reasonDiv.classList.add("fade-in", "show");
       tipDiv.classList.add("fade-in", "show");
       shareBtn.classList.add("fade-in", "show");
 
-      saveHistory(plantSelect.value, current); // save local history
-      generateShareImage(); // draw image on canvas
+      saveHistory(plantSelect.value, targetScore);
+      generateShareImage();
     }
   }, 15);
 }
@@ -98,11 +102,12 @@ function generateShareImage(){
   ctx.fillRect(0,0,500,250);
   ctx.fillStyle = "#333";
   ctx.font = "24px sans-serif";
-  ctx.fillText(`Plant: ${plants[plantSelect.value].name}`, 20, 50);
+  const plant = plants[plantSelect.value];
+  ctx.fillText(`Plant: ${plant.name}`, 20, 50);
   ctx.fillText(`Score: ${scoreDiv.textContent}`, 20, 100);
   ctx.fillText(`${emojiDiv.textContent}`, 20, 150);
   ctx.fillText(`${tipDiv.textContent}`, 20, 200);
-  shareCanvas.classList.add("hidden"); // keep hidden
+  shareCanvas.classList.add("hidden");
 }
 
 // Calculate
@@ -136,11 +141,7 @@ function calculate() {
 
   score = Math.max(0, Math.min(100, score));
 
-  animateScore(score);
-
-  messageDiv.textContent = getMessage(score);
-  reasonDiv.textContent = reason ? `Main issue: ${reason}` : "Nothing critical";
-  tipDiv.textContent = getMiniTip(plant);
+  animateScore(score, reason);
 
   resultDiv.classList.remove("hidden");
 }
@@ -148,10 +149,10 @@ function calculate() {
 // Share button
 shareBtn.addEventListener("click", () => {
   const plant = plants[plantSelect.value];
-  const score = scoreDiv.textContent;
+  const score = scoreDiv.textContent; // no double %
   const canvasData = shareCanvas.toDataURL("image/png");
 
-  const shareText = `My ${plant.name} has a ${score}% chance of survival! 🌿\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`;
+  const shareText = `My ${plant.name} has a ${score} chance of survival! 🌿\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`;
 
   if (navigator.share) {
     navigator.share({
