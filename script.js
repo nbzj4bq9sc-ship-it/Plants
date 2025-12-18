@@ -3,6 +3,7 @@ const resultDiv = document.getElementById("result");
 const scoreDiv = document.querySelector(".score");
 const emojiDiv = document.querySelector(".emoji");
 const messageDiv = document.querySelector(".message");
+const reasonDiv = document.querySelector(".reason");
 const tipDiv = document.querySelector(".tip");
 const shareBtn = document.getElementById("shareBtn");
 const tempSlider = document.getElementById("temperature");
@@ -41,13 +42,34 @@ function getMessage(score) {
   return "Perfect! Your plant should thrive!";
 }
 
+// Main issue message
+function getMainIssue(plant, userWater, userLight, userTemp) {
+  const waterDiff = Math.abs(userWater - plant.water);
+  const lightDiff = Math.abs(userLight - plant.light);
+  const tempDiff = Math.abs(userTemp - plant.temp);
+
+  if (waterDiff > 0) {
+    if(userWater > plant.water) return `You should water your ${plant.name} ${plant.water} times per week maximum.`;
+    else return `You should water your ${plant.name} at least ${plant.water} times per week.`;
+  }
+  if (lightDiff > 0) {
+    if(userLight > plant.light) return `Reduce light exposure for your ${plant.name}.`;
+    else return `Increase light for your ${plant.name}.`;
+  }
+  if (tempDiff > 5) {
+    return `Adjust the temperature around your ${plant.name}.`;
+  }
+  return ""; // no main issue
+}
+
 // Animate score
-function animateScore(targetScore) {
+function animateScore(targetScore, plant, userWater, userLight, userTemp) {
   let current = 0;
   scoreDiv.textContent = "0%";
   emojiDiv.textContent = "🌿";
   scoreDiv.classList.remove("pulse", "bounce");
   messageDiv.classList.remove("fade-in", "show");
+  reasonDiv.classList.remove("fade-in", "show");
   tipDiv.classList.remove("fade-in", "show");
   shareBtn.classList.remove("fade-in", "show", "hidden");
 
@@ -62,9 +84,11 @@ function animateScore(targetScore) {
       clearInterval(interval);
       scoreDiv.classList.add("bounce");
       messageDiv.textContent = getMessage(targetScore);
-      tipDiv.textContent = plants[plantSelect.value].tip;
+      reasonDiv.textContent = getMainIssue(plant, userWater, userLight, userTemp);
+      tipDiv.textContent = plant.tip;
 
       messageDiv.classList.add("fade-in", "show");
+      reasonDiv.classList.add("fade-in", "show");
       tipDiv.classList.add("fade-in", "show");
       shareBtn.classList.add("fade-in", "show");
 
@@ -100,7 +124,7 @@ function calculate() {
 
   score = Math.max(0, Math.min(100, score));
 
-  animateScore(score);
+  animateScore(score, plant, userWater, userLight, userTemp);
   resultDiv.classList.remove("hidden");
 }
 
