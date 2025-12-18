@@ -14,7 +14,17 @@ plants.forEach((plant, index) => {
   plantSelect.appendChild(option);
 });
 
-// Wording by percentage ranges
+// Convert score to approximate lifespan
+function scoreToDuration(score) {
+  if(score <= 10) return "a few days";
+  if(score <= 25) return "1-2 weeks";
+  if(score <= 50) return "1-2 months";
+  if(score <= 75) return "6-12 months";
+  if(score <= 90) return "1-2 years";
+  return "several years";
+}
+
+// Wording by percentage ranges (message remains)
 function getMessage(score) {
   if(score <= 10) return "☠️ This plant is doomed… maybe try another one!";
   if(score <= 25) return "💀 Danger zone! Your plant needs serious attention.";
@@ -24,10 +34,10 @@ function getMessage(score) {
   return "🌟 Perfect! This plant should thrive beautifully!";
 }
 
-// Animate score from 0 to target + fade/slide for messages + share button
+// Animate score (duration now) + fade/slide for tip & share button
 function animateScore(targetScore) {
   let current = 0;
-  scoreDiv.textContent = "0%";
+  scoreDiv.textContent = "calculating...";
   scoreDiv.classList.remove("pulse", "bounce");
   messageDiv.classList.remove("fade-in", "show");
   reasonDiv.classList.remove("fade-in", "show");
@@ -37,7 +47,8 @@ function animateScore(targetScore) {
   const interval = setInterval(() => {
     current++;
     if(current > targetScore) current = targetScore;
-    scoreDiv.textContent = current + "%";
+
+    scoreDiv.textContent = scoreToDuration(current);
 
     scoreDiv.classList.add("pulse");
 
@@ -87,15 +98,15 @@ function calculate() {
 // Share button functionality
 shareBtn.addEventListener("click", () => {
   const plant = plants[plantSelect.value];
-  const score = scoreDiv.textContent;
+  const duration = scoreDiv.textContent;
 
-  const text = `I think my ${plant.name} will survive ${score}! Check your plant here: https://your-site-url.com`;
+  const text = `I think my ${plant.name} will survive ${duration}! Check your plant here: https://your-site-url.com`;
 
   if (navigator.share) {
     navigator.share({
       title: 'How long will my plant survive?',
       text: text,
-      url: 'https://your-site-url.com',
+      url: 'https://nbzj4bq9sc-ship-it.github.io/Plants/',
     }).catch(err => console.log('Share cancelled', err));
   } else {
     navigator.clipboard.writeText(text).then(() => {
