@@ -9,14 +9,17 @@
 <body>
 
   <div class="app">
-    <h1>🌱 Will my plant survive?</h1>
+    <h1>
+      🌱 Will my plant survive?
+      <button id="langBtn" class="lang-btn">FR</button>
+    </h1>
     <p class="subtitle">A quick estimation. Be honest. We will.</p>
 
     <div class="card">
-      <label>Plant</label>
+      <label for="plantSelect">Plant</label>
       <select id="plantSelect"></select>
 
-      <label>Watering (times per week)</label>
+      <label for="water">Watering (times per week)</label>
       <select id="water">
         <option value="0">0</option>
         <option value="1">1</option>
@@ -24,14 +27,14 @@
         <option value="3">3+</option>
       </select>
 
-      <label>Light</label>
+      <label for="light">Light</label>
       <select id="light">
         <option value="1">Low light</option>
         <option value="2">Medium light</option>
         <option value="3">Bright light</option>
       </select>
 
-      <label>Temperature (°C)</label>
+      <label for="temperature">Temperature (°C)</label>
       <input type="range" min="10" max="35" value="22" id="temperature" />
 
       <span id="tempValue">22°C</span>
