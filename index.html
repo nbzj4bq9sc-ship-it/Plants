@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plant Survival Estimator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="app">
+    <h1>🌱 Plant Survival Estimator</h1>
+    <p class="subtitle">Estimate your plant’s chances… before it’s too late.</p>
+
+    <div class="card">
+      <label>Plant</label>
+      <select id="plantSelect"></select>
+
+      <label>Watering (times per week)</label>
+      <select id="water">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3+</option>
+      </select>
+
+      <label>Light</label>
+      <select id="light">
+        <option value="1">Low light</option>
+        <option value="2">Medium light</option>
+        <option value="3">Bright light</option>
+      </select>
+
+      <button onclick="calculate()">Estimate survival</button>
+    </div>
+
+    <div id="result" class="result hidden"></div>
+
+    <p class="disclaimer">
+      Estimation based on general plant profiles.<br />
+      Plants sometimes have… personality.
+    </p>
+  </div>
+
+  <script src="plants.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+const plants = [
+  { name: "Monstera", water: 2, light: 2 },
+  { name: "Ficus", water: 1, light: 2 },
+  { name: "Pothos", water: 2, light: 1 },
+  { name: "Snake Plant", water: 1, light: 1 },
+  { name: "Peace Lily", water: 3, light: 2 },
+  { name: "Calathea", water: 3, light: 1 },
+  { name: "ZZ Plant", water: 1, light: 1 },
+  { name: "Rubber Plant", water: 1, light: 2 },
+  { name: "Aloe Vera", water: 0, light: 3 },
+  { name: "Cactus", water: 0, light: 3 },
+  { name: "Orchid", water: 2, light: 2 },
+  { name: "Fern", water: 3, light: 1 },
+  { name: "Dracaena", water: 1, light: 2 },
+  { name: "Philodendron", water: 2, light: 2 },
+  { name: "Spider Plant", water: 2, light: 2 },
+  { name: "Succulent", water: 0, light: 3 },
+  { name: "Areca Palm", water: 2, light: 2 },
+  { name: "Chinese Money Plant", water: 2, light: 2 },
+  { name: "Anthurium", water: 3, light: 2 },
+  { name: "Bamboo Palm", water: 2, light: 1 }
+];
