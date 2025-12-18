@@ -1,62 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Will my plant survive?</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will my plant survive?</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <div class="app">
-    <h1>🌱 Will my plant survive?</h1>
-    <p class="subtitle">A quick estimation… be honest!</p>
-
-    <div class="card">
-      <label>Plant</label>
-      <select id="plantSelect"></select>
-
-      <label>Watering (times per week)</label>
-      <select id="water">
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3+</option>
-      </select>
-
-      <label>Light</label>
-      <select id="light">
-        <option value="1">Low light</option>
-        <option value="2">Medium light</option>
-        <option value="3">Bright light</option>
-      </select>
-
-      <label>Temperature (°C)</label>
-      <input type="range" min="10" max="35" value="22" id="temperature" />
-
-      <span id="tempValue">22°C</span>
-
-      <button onclick="calculate()">Face the truth</button>
+  <header>
+    <div class="logo-title">
+      <img src="logo.png" alt="Plant Logo" class="logo"> <!-- Logo à mettre dans ton dossier -->
+      <h1>Will my plant survive?</h1>
     </div>
+    <p class="subtitle">A quick estimation. Be honest. We will.</p>
+  </header>
 
-    <div id="result" class="result hidden">
+  <main>
+    <section class="controls">
+      <label for="plantSelect">Choose your plant:</label>
+      <select id="plantSelect">
+        <option value="">--Select--</option>
+      </select>
+
+      <label for="water">Water (times per week):</label>
+      <input type="number" id="water" min="0" max="7" value="3">
+
+      <label for="light">Light level (1-5):</label>
+      <input type="number" id="light" min="1" max="5" value="3">
+
+      <label for="temperature">Temperature (°C): <span id="tempValue">22°C</span></label>
+      <input type="range" id="temperature" min="10" max="35" value="22">
+
+      <button onclick="calculate()">Check my plant</button>
+    </section>
+
+    <section id="result" class="hidden">
       <div class="score">0%</div>
-      <div class="emoji" style="font-size: 48px;">🌿</div>
-      <p class="message"></p>
-      <p class="reason"></p>
-      <p class="tip"></p>
-      <button id="shareBtn" class="share-btn hidden">Share my plant skills 😎</button>
-      <canvas id="shareCanvas" class="hidden"></canvas>
-    </div>
+      <div class="emoji">🌿</div>
+      <div class="message"></div>
+      <div class="tip"></div>
+      <button id="shareBtn" class="hidden">Share my plant skills 😎</button>
+    </section>
+  </main>
 
-    <p class="disclaimer">
-      Not science. Just experience. Plants sometimes have personality.
-    </p>
-
-    <p class="credits">
-      Created by Romain Daney. Inspired by houseplant care guides. 🌱
-    </p>
-  </div>
+  <!-- Hidden canvas removed (PNG not needed anymore) -->
 
   <script src="plants.js"></script>
   <script src="script.js"></script>
