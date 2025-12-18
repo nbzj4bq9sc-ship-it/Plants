@@ -1,225 +1,225 @@
+// Elements
 const plantSelect = document.getElementById("plantSelect");
-const resultDiv = document.getElementById("result");
-const scoreDiv = document.querySelector(".score");
-const emojiDiv = document.querySelector(".emoji");
-const messageDiv = document.querySelector(".message");
-const reasonDiv = document.querySelector(".reason");
-const tipDiv = document.querySelector(".tip");
-const shareBtn = document.getElementById("shareBtn");
+const waterInput = document.getElementById("water");
+const lightSelect = document.getElementById("light");
 const tempSlider = document.getElementById("temperature");
 const tempValue = document.getElementById("tempValue");
+const resultDiv = document.getElementById("result");
+const scoreDiv = resultDiv.querySelector(".score");
+const emojiDiv = resultDiv.querySelector(".emoji");
+const messageDiv = resultDiv.querySelector(".message");
+const reasonDiv = resultDiv.querySelector(".reason");
+const tipDiv = resultDiv.querySelector(".tip");
+const shareBtn = document.getElementById("shareBtn");
 const langBtn = document.getElementById("langBtn");
 
-/* ================= LANGUAGE ================= */
+// Text elements for translation
+const titleEl = document.getElementById("title");
+const subtitleEl = document.getElementById("subtitle");
+const labelPlant = document.getElementById("labelPlant");
+const labelWater = document.getElementById("labelWater");
+const labelLight = document.getElementById("labelLight");
+const labelTemp = document.getElementById("labelTemp");
+const calculateBtn = document.getElementById("calculateBtn");
+const disclaimerEl = document.getElementById("disclaimer");
+const creditsEl = document.getElementById("credits");
 
+// Language state
 let currentLang = "en";
 
+// Translation data
 const translations = {
   en: {
-    title: "🌱 Will my plant survive?",
+    title: "Will my plant survive?",
     subtitle: "A quick estimation. Be honest. We will.",
     plant: "Plant",
     water: "Watering (times per week)",
     light: "Light",
     temp: "Temperature (°C)",
     calculate: "Face the truth",
-    share: "Share my plant skills 😎",
     disclaimer: "Not science. Just experience. Plants sometimes have personality.",
+    share: "Share my plant skills 😎",
     credits: "Created by Romain Daney. Inspired by houseplant care guides. 🌱",
-    shareText: (plant, score) =>
-      `My ${plant} has a ${score} chance of survival!\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`,
-    copied: "Result copied! Share it anywhere.",
-    waterTooMuch: (plant, n) =>
-      `You should water your ${plant} ${n} times per week maximum.`,
-    waterTooLittle: (plant, n) =>
-      `You should water your ${plant} at least ${n} times per week.`,
-    lightTooMuch: (plant) =>
-      `Reduce light exposure for your ${plant}.`,
-    lightTooLittle: (plant) =>
-      `Increase light for your ${plant}.`,
-    tempIssue: (plant) =>
-      `Adjust the temperature around your ${plant}.`
+    lightOptions: ["Low", "Medium", "Bright"],
+    shareText: (plantName, score) => `My ${plantName} has a ${score} chance of survival! 🌿\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`
   },
-
   fr: {
-    title: "🌱 Ma plante survivra-t-elle ?",
-    subtitle: "Une estimation rapide. Soyez honnête. Nous le serons.",
+    title: "Ma plante survivra-t-elle ?",
+    subtitle: "Estimation rapide. Soyez honnête. Nous aussi.",
     plant: "Plante",
     water: "Arrosage (fois par semaine)",
     light: "Lumière",
     temp: "Température (°C)",
     calculate: "Affrontez la vérité",
-    share: "Partager mes talents de jardinier 😎",
-    disclaimer: "Pas scientifique. Juste de l’expérience. Les plantes ont parfois du caractère.",
-    credits: "Créé par Romain Daney. Inspiré des guides de plantes d’intérieur. 🌱",
-    shareText: (plant, score) =>
-      `Ma ${plant} a ${score} de chance de survie !\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`,
-    copied: "Résultat copié !",
-    waterTooMuch: (plant, n) =>
-      `Vous devriez arroser votre ${plant} ${n} fois par semaine maximum.`,
-    waterTooLittle: (plant, n) =>
-      `Vous devriez arroser votre ${plant} au moins ${n} fois par semaine.`,
-    lightTooMuch: (plant) =>
-      `Réduisez la lumière pour votre ${plant}.`,
-    lightTooLittle: (plant) =>
-      `Augmentez la lumière pour votre ${plant}.`,
-    tempIssue: (plant) =>
-      `Ajustez la température autour de votre ${plant}.`
+    disclaimer: "Pas scientifique. Juste de l’expérience. Les plantes ont parfois leur personnalité.",
+    share: "Partage mes skills de plante 😎",
+    credits: "Créé par Romain Daney. Inspiré des guides de soins de plantes. 🌱",
+    lightOptions: ["Faible", "Moyenne", "Élevée"],
+    shareText: (plantName, score) => `Ma ${plantName} a ${score} de chance de survie ! 🌿\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`
   }
 };
 
-langBtn.addEventListener("click", () => {
-  currentLang = currentLang === "en" ? "fr" : "en";
-  langBtn.textContent = currentLang === "en" ? "FR" : "EN";
-  applyLanguage();
-});
+// Update text function
+function updateLanguage() {
+  const t = translations[currentLang];
+  titleEl.querySelector("img") ? null : titleEl.innerHTML = t.title; 
+  subtitleEl.textContent = t.subtitle;
+  labelPlant.textContent = t.plant;
+  labelWater.textContent = t.water;
+  labelLight.textContent = t.light;
+  labelTemp.textContent = t.temp;
+  calculateBtn.textContent = t.calculate;
+  disclaimerEl.textContent = t.disclaimer;
+  creditsEl.textContent = t.credits;
+  shareBtn.textContent = t.share;
 
-function applyLanguage() {
-  document.getElementById("title").textContent = translations[currentLang].title;
-  document.getElementById("subtitle").textContent = translations[currentLang].subtitle;
-  document.getElementById("labelPlant").textContent = translations[currentLang].plant;
-  document.getElementById("labelWater").textContent = translations[currentLang].water;
-  document.getElementById("labelLight").textContent = translations[currentLang].light;
-  document.getElementById("labelTemp").textContent = translations[currentLang].temp;
-  document.getElementById("calculateBtn").textContent = translations[currentLang].calculate;
-  shareBtn.textContent = translations[currentLang].share;
-  document.getElementById("disclaimer").textContent = translations[currentLang].disclaimer;
-  document.getElementById("credits").textContent = translations[currentLang].credits;
+  // Update light options
+  Array.from(lightSelect.options).forEach((opt, idx) => {
+    opt.textContent = t.lightOptions[idx];
+  });
+
+  // Update plant names
+  plantSelect.innerHTML = "";
+  plants.forEach((plant, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = currentLang === "fr" ? plant.name_fr || plant.name : plant.name;
+    plantSelect.appendChild(option);
+  });
+
+  // Update lang button
+  langBtn.textContent = currentLang === "en" ? "FR" : "EN";
 }
 
-/* ================= INIT ================= */
+// Initial population
+updateLanguage();
 
+// Temperature slider update
 tempSlider.addEventListener("input", () => {
   tempValue.textContent = `${tempSlider.value}°C`;
 });
 
-plants.forEach((plant, index) => {
-  const option = document.createElement("option");
-  option.value = index;
-  option.textContent = plant.name;
-  plantSelect.appendChild(option);
-});
-
-/* ================= EMOJI ================= */
-
-function getEmoji(score) {
-  if (score <= 10) return "☠️";
-  if (score <= 25) return "💀";
-  if (score <= 50) return "☹️";
-  if (score <= 75) return "⚠️";
-  if (score <= 90) return "🌿";
+// Emoji by score
+function getEmoji(score){
+  if(score <= 10) return "☠️";
+  if(score <= 25) return "💀";
+  if(score <= 50) return "☹️";
+  if(score <= 75) return "⚠️";
+  if(score <= 90) return "🌿";
   return "🌟";
 }
 
-/* ================= MAIN ISSUE ================= */
-
-function getMainIssue(plant, userWater, userLight, userTemp) {
-  const t = translations[currentLang];
-
-  if (userWater !== plant.water) {
-    return userWater > plant.water
-      ? t.waterTooMuch(plant.name, plant.water)
-      : t.waterTooLittle(plant.name, plant.water);
-  }
-
-  if (userLight !== plant.light) {
-    return userLight > plant.light
-      ? t.lightTooMuch(plant.name)
-      : t.lightTooLittle(plant.name);
-  }
-
-  if (Math.abs(userTemp - plant.temp) > 5) {
-    return t.tempIssue(plant.name);
-  }
-
-  return "";
+// Message by score
+function getMessage(score, reason) {
+  if(score <= 10) return reason ? `Critical issue: ${reason}` : "Critical issues detected!";
+  if(score <= 25) return reason ? `Major concern: ${reason}` : "Major care needed!";
+  if(score <= 50) return reason ? `Attention needed: ${reason}` : "Some care adjustments recommended.";
+  if(score <= 75) return reason ? `Minor tweaks: ${reason}` : "Your plant is mostly okay.";
+  if(score <= 90) return reason ? `Good, minor adjustments: ${reason}` : "Looking good!";
+  return "Perfect! Your plant should thrive!";
 }
 
-/* ================= SCORE ANIMATION ================= */
+// Mini tip (plant independent)
+function getMiniTip(plant){
+  return plant.tip;
+}
 
-function animateScore(targetScore, plant, userWater, userLight, userTemp) {
+// Animate score
+function animateScore(targetScore, reason) {
   let current = 0;
-
   scoreDiv.textContent = "0%";
   emojiDiv.textContent = "🌿";
+  scoreDiv.classList.remove("pulse", "bounce");
+  messageDiv.classList.remove("fade-in", "show");
+  reasonDiv.classList.remove("fade-in", "show");
+  tipDiv.classList.remove("fade-in", "show");
+  shareBtn.classList.remove("fade-in", "show", "hidden");
 
   const interval = setInterval(() => {
     current++;
-    if (current > targetScore) current = targetScore;
-
+    if(current > targetScore) current = targetScore;
     scoreDiv.textContent = current + "%";
     emojiDiv.textContent = getEmoji(current);
 
-    if (current === targetScore) {
+    scoreDiv.classList.add("pulse");
+
+    if(current === targetScore){
       clearInterval(interval);
+      scoreDiv.classList.add("bounce");
+      messageDiv.textContent = getMessage(targetScore, reason);
+      reasonDiv.textContent = reason ? reason : "";
+      tipDiv.textContent = getMiniTip(plants[plantSelect.value]);
 
-      messageDiv.textContent =
-        current >= 90 ? "Perfect!" :
-        current >= 75 ? "Looking good!" :
-        current >= 50 ? "Some adjustments needed." :
-        "Care needed.";
-
-      reasonDiv.textContent = getMainIssue(
-        plant,
-        userWater,
-        userLight,
-        userTemp
-      );
-
-      tipDiv.textContent = plant.tip;
-
-      messageDiv.classList.add("show");
-      reasonDiv.classList.add("show");
-      tipDiv.classList.add("show");
-      shareBtn.classList.remove("hidden");
+      messageDiv.classList.add("fade-in","show");
+      reasonDiv.classList.add("fade-in","show");
+      tipDiv.classList.add("fade-in","show");
+      shareBtn.classList.add("fade-in","show");
 
       saveHistory(plantSelect.value, targetScore);
     }
   }, 15);
 }
 
-/* ================= HISTORY ================= */
-
-function saveHistory(plantIndex, score) {
-  let history = JSON.parse(localStorage.getItem("plantHistory") || "[]");
-  history.push({
-    plant: plants[plantIndex].name,
-    score,
-    date: new Date().toISOString()
-  });
-  localStorage.setItem("plantHistory", JSON.stringify(history));
-}
-
-/* ================= CALCULATE ================= */
-
-function calculate() {
+// Calculate
+function calculate(){
   const plant = plants[plantSelect.value];
-  const userWater = parseInt(document.getElementById("water").value);
-  const userLight = parseInt(document.getElementById("light").value);
-  const userTemp = parseInt(document.getElementById("temperature").value);
+  const userWater = parseInt(waterInput.value);
+  const userLight = parseInt(lightSelect.value);
+  const userTemp = parseInt(tempSlider.value);
 
   let score = 100;
+  let reason = "";
 
-  score -= Math.abs(userWater - plant.water) * 20;
-  score -= Math.abs(userLight - plant.light) * 15;
+  const waterDiff = Math.abs(userWater - plant.water);
+  const lightDiff = Math.abs(userLight - plant.light);
+  const tempDiff = Math.abs(userTemp - plant.temp);
 
-  if (Math.abs(userTemp - plant.temp) > 5) {
+  if (waterDiff > 0){
+    score -= waterDiff * 20;
+    reason = userWater > plant.water ? (currentLang==="fr"?"Trop d’eau":"Too much water") : (currentLang==="fr"?"Pas assez d’eau":"Not enough water");
+  }
+  if (lightDiff > 0){
+    score -= lightDiff * 15;
+    if(!reason) reason = userLight > plant.light ? (currentLang==="fr"?"Trop de lumière":"Too much light") : (currentLang==="fr"?"Pas assez de lumière":"Not enough light");
+  }
+  if(tempDiff > 5){
     score -= 15;
+    if(!reason) reason = currentLang==="fr"?"Température non adaptée":"Temperature mismatch";
   }
 
   score = Math.max(0, Math.min(100, score));
-
-  animateScore(score, plant, userWater, userLight, userTemp);
+  animateScore(score, reason);
   resultDiv.classList.remove("hidden");
 }
 
-/* ================= SHARE ================= */
+// Local history
+function saveHistory(plantIndex, score){
+  let history = JSON.parse(localStorage.getItem("plantHistory")||"[]");
+  const plant = plants[plantIndex];
+  history.push({name: plant.name, score, date: new Date().toISOString()});
+  localStorage.setItem("plantHistory", JSON.stringify(history));
+}
 
+// Share
 shareBtn.addEventListener("click", () => {
   const plant = plants[plantSelect.value];
   const score = scoreDiv.textContent;
-  const text = translations[currentLang].shareText(plant.name, score);
+  const shareText = translations[currentLang].shareText(currentLang==="fr"?plant.name_fr||plant.name:plant.name, score);
 
-  navigator.clipboard.writeText(text);
-  alert(translations[currentLang].copied);
+  if (navigator.share){
+    navigator.share({
+      title: translations[currentLang].title,
+      text: shareText
+    }).catch(err=>console.log("Share cancelled", err));
+  } else {
+    navigator.clipboard.writeText(shareText).then(()=>{
+      alert(currentLang==="fr"?"Résultat copié!":"Result copied! Share it anywhere.");
+    });
+  }
+});
+
+// Language toggle
+langBtn.addEventListener("click", () => {
+  currentLang = currentLang === "en" ? "fr" : "en";
+  updateLanguage();
 });
