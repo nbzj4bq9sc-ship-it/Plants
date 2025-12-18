@@ -76,15 +76,9 @@ function animateScore(targetScore) {
   }, 15);
 }
 
-// Mini tip by combination
-function getMiniTip(userWater, userLight, userTemp, plant) {
-  let tips = [];
-  if(userWater > plant.water) tips.push("Too much water!");
-  if(userWater < plant.water) tips.push("Water more!");
-  if(userLight > plant.light) tips.push("Too much light!");
-  if(userLight < plant.light) tips.push("Increase light!");
-  if(Math.abs(userTemp - plant.temp) > 5) tips.push("Temperature is off!");
-  return tips.join(" ");
+// Mini tip by combination (independent of score)
+function getMiniTip(plant) {
+  return plant.tip; // original tip only
 }
 
 // Local history
@@ -146,7 +140,7 @@ function calculate() {
 
   messageDiv.textContent = getMessage(score);
   reasonDiv.textContent = reason ? `Main issue: ${reason}` : "Nothing critical";
-  tipDiv.textContent = getMiniTip(userWater, userLight, userTemp, plant);
+  tipDiv.textContent = getMiniTip(plant);
 
   resultDiv.classList.remove("hidden");
 }
@@ -157,14 +151,16 @@ shareBtn.addEventListener("click", () => {
   const score = scoreDiv.textContent;
   const canvasData = shareCanvas.toDataURL("image/png");
 
+  const shareText = `My ${plant.name} has a ${score}% chance of survival! 🌿\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`;
+
   if (navigator.share) {
     navigator.share({
       title: 'Will my plant survive?',
-      text: `I think my ${plant.name} will survive ${score}!`,
+      text: shareText,
       files: [dataURLtoFile(canvasData, 'plant.png')],
     }).catch(err => console.log('Share cancelled', err));
   } else {
-    navigator.clipboard.writeText(`I think my ${plant.name} will survive ${score}!`).then(()=>{
+    navigator.clipboard.writeText(shareText).then(()=>{
       alert("Result copied! Share it anywhere.");
     });
   }
