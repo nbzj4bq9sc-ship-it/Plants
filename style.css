@@ -18,16 +18,20 @@ h1 {
 }
 
 .lang-btn {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 14px;
-  padding: 4px 8px;
-  margin-top: 4px;
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  font-size: 12px;
+  padding: 4px 6px;
   border-radius: 6px;
   border: 1px solid #ddd;
   background: #f0f0f0;
   cursor: pointer;
+  z-index: 1000;
+}
+
+.lang-btn:hover {
+  background: #e0e0e0;
 }
 
 .lang-btn:hover {
