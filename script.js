@@ -4,6 +4,7 @@ const scoreDiv = document.querySelector(".score");
 const messageDiv = document.querySelector(".message");
 const reasonDiv = document.querySelector(".reason");
 const tipDiv = document.querySelector(".tip");
+const shareBtn = document.getElementById("shareBtn");
 
 // Populate select
 plants.forEach((plant, index) => {
@@ -23,7 +24,7 @@ function getMessage(score) {
   return "🌟 Perfect! This plant should thrive beautifully!";
 }
 
-// Animate score from 0 to target + add fade/slide for messages
+// Animate score from 0 to target + fade/slide for messages + share button
 function animateScore(targetScore) {
   let current = 0;
   scoreDiv.textContent = "0%";
@@ -31,23 +32,22 @@ function animateScore(targetScore) {
   messageDiv.classList.remove("fade-in", "show");
   reasonDiv.classList.remove("fade-in", "show");
   tipDiv.classList.remove("fade-in", "show");
+  shareBtn.classList.remove("fade-in", "show", "hidden");
 
   const interval = setInterval(() => {
     current++;
     if(current > targetScore) current = targetScore;
     scoreDiv.textContent = current + "%";
 
-    // Pulse during counting
     scoreDiv.classList.add("pulse");
 
     if(current === targetScore) {
       clearInterval(interval);
-      // Bounce final
       scoreDiv.classList.add("bounce");
-      // Fade-in messages
       messageDiv.classList.add("fade-in", "show");
       reasonDiv.classList.add("fade-in", "show");
       tipDiv.classList.add("fade-in", "show");
+      shareBtn.classList.add("fade-in", "show");
     }
   }, 15);
 }
@@ -57,7 +57,7 @@ function calculate() {
   const userWater = parseInt(document.getElementById("water").value);
   const userLight = parseInt(document.getElementById("light").value);
 
-  let score = 100; // allow perfect score
+  let score = 100;
   let reason = "";
 
   const waterDiff = Math.abs(userWater - plant.water);
@@ -83,3 +83,23 @@ function calculate() {
 
   resultDiv.classList.remove("hidden");
 }
+
+// Share button functionality
+shareBtn.addEventListener("click", () => {
+  const plant = plants[plantSelect.value];
+  const score = scoreDiv.textContent;
+
+  const text = `I think my ${plant.name} will survive ${score}! Check your plant here: https://your-site-url.com`;
+
+  if (navigator.share) {
+    navigator.share({
+      title: 'How long will my plant survive?',
+      text: text,
+      url: 'https://your-site-url.com',
+    }).catch(err => console.log('Share cancelled', err));
+  } else {
+    navigator.clipboard.writeText(text).then(() => {
+      alert("Result copied! Share it anywhere.");
+    });
+  }
+});
