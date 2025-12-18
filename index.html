@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plant Survival Estimator</title>
+  <title>How long will my plant survive?</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <div class="app">
-    <h1>🌱 Plant Survival Estimator</h1>
-    <p class="subtitle">Estimate your plant’s chances… before it’s too late.</p>
+    <h1>🌱 How long will my plant survive?</h1>
+    <p class="subtitle">A quick estimation… be honest!</p>
 
     <div class="card">
       <label>Plant</label>
@@ -31,14 +31,17 @@
         <option value="3">Bright light</option>
       </select>
 
-      <button onclick="calculate()">Estimate survival</button>
+      <button onclick="calculate()">Face the truth</button>
     </div>
 
-    <div id="result" class="result hidden"></div>
+    <div id="result" class="result hidden">
+      <div class="score">0%</div>
+      <p class="message"></p>
+      <p class="reason"></p>
+    </div>
 
     <p class="disclaimer">
-      Estimation based on general plant profiles.<br />
-      Plants sometimes have… personality.
+      Not science. Just experience. Plants sometimes have personality.
     </p>
   </div>
 
