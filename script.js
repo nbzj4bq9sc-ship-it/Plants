@@ -3,12 +3,10 @@ const resultDiv = document.getElementById("result");
 const scoreDiv = document.querySelector(".score");
 const emojiDiv = document.querySelector(".emoji");
 const messageDiv = document.querySelector(".message");
-const reasonDiv = document.querySelector(".reason");
 const tipDiv = document.querySelector(".tip");
 const shareBtn = document.getElementById("shareBtn");
 const tempSlider = document.getElementById("temperature");
 const tempValue = document.getElementById("tempValue");
-const shareCanvas = document.getElementById("shareCanvas");
 
 // Update temperature display
 tempSlider.addEventListener("input", () => {
@@ -33,24 +31,23 @@ function getEmoji(score){
   return "🌟";
 }
 
-// Precise wording by score and mismatch
-function getMessage(score, reason) {
-  if(score <= 10) return reason ? `Critical issue: ${reason}` : "Critical issues detected!";
-  if(score <= 25) return reason ? `Major concern: ${reason}` : "Major care needed!";
-  if(score <= 50) return reason ? `Attention needed: ${reason}` : "Some care adjustments recommended.";
-  if(score <= 75) return reason ? `Minor tweaks: ${reason}` : "Your plant is mostly okay.";
-  if(score <= 90) return reason ? `Good, minor adjustments: ${reason}` : "Looking good!";
-  return "Perfect! Your plant should thrive!";
+// Precise wording by score and mismatch with humor
+function getMessage(score){
+  if(score <= 10) return "0% chance. This plant is plotting against you!";
+  if(score <= 25) return "25% chance. Might survive a light drizzle of zombies...";
+  if(score <= 50) return "50% chance. Could survive a mild apocalypse!";
+  if(score <= 75) return "75% chance. Strong enough for a zombie weekend!";
+  if(score <= 90) return "90% chance. Nearly apocalypse-proof!";
+  return "100% chance. Survives even a zombie invasion!";
 }
 
 // Animate score
-function animateScore(targetScore, reason) {
+function animateScore(targetScore) {
   let current = 0;
   scoreDiv.textContent = "0%";
   emojiDiv.textContent = "🌿";
   scoreDiv.classList.remove("pulse", "bounce");
   messageDiv.classList.remove("fade-in", "show");
-  reasonDiv.classList.remove("fade-in", "show");
   tipDiv.classList.remove("fade-in", "show");
   shareBtn.classList.remove("fade-in", "show", "hidden");
 
@@ -59,23 +56,19 @@ function animateScore(targetScore, reason) {
     if(current > targetScore) current = targetScore;
     scoreDiv.textContent = current + "%";
     emojiDiv.textContent = getEmoji(current);
-
     scoreDiv.classList.add("pulse");
 
     if(current === targetScore) {
       clearInterval(interval);
       scoreDiv.classList.add("bounce");
-      messageDiv.textContent = getMessage(targetScore, reason);
-      reasonDiv.textContent = reason ? `Main issue: ${reason}` : "No critical issues";
+      messageDiv.textContent = getMessage(targetScore);
       tipDiv.textContent = getMiniTip(plants[plantSelect.value]);
 
       messageDiv.classList.add("fade-in", "show");
-      reasonDiv.classList.add("fade-in", "show");
       tipDiv.classList.add("fade-in", "show");
       shareBtn.classList.add("fade-in", "show");
 
       saveHistory(plantSelect.value, targetScore);
-      generateShareImage();
     }
   }, 15);
 }
@@ -93,143 +86,7 @@ function saveHistory(plantIndex, score){
   localStorage.setItem("plantHistory", JSON.stringify(history));
 }
 
-// Humorous message by score for share PNG
-function getShareMessage(score){
-  if(score <= 10) return "0% chance. This plant is already plotting against you!";
-  if(score <= 25) return "25% chance. Might survive a light drizzle of zombies...";
-  if(score <= 50) return "50% chance. Could survive a mild apocalypse!";
-  if(score <= 75) return "75% chance. Strong enough for a zombie weekend!";
-  if(score <= 90) return "90% chance. Nearly apocalypse-proof!";
-  return "100% chance. Survives even a zombie invasion!";
-}
-
-// Generate share image with logo
-function generateShareImage(){
-  const ctx = shareCanvas.getContext("2d");
-  shareCanvas.width = 600;
-  shareCanvas.height = 600;
-
-  // Background gradient pastel
-  const grad = ctx.createLinearGradient(0,0,0,shareCanvas.height);
-  grad.addColorStop(0, "#fef6e4");
-  grad.addColorStop(1, "#e3f2e2");
-  ctx.fillStyle = grad;
-  ctx.fillRect(0,0,shareCanvas.width, shareCanvas.height);
-
-  // Card with rounded corners and shadow
-  const cardX = 50, cardY = 50, cardW = 500, cardH = 500;
-  ctx.fillStyle = "#ffffff";
-  ctx.shadowColor = "rgba(0,0,0,0.15)";
-  ctx.shadowBlur = 15;
-  ctx.shadowOffsetX = 0;
-  ctx.shadowOffsetY = 5;
-  roundRect(ctx, cardX, cardY, cardW, cardH, 20, true, false);
-
-  ctx.shadowColor = "transparent";
-
-  const plant = plants[plantSelect.value];
-
-  // Logo badge top-right
-  const logoX = cardX + cardW - 50;
-  const logoY = cardY + 50;
-  const logoRadius = 30;
-  ctx.fillStyle = "#d4e9d4";
-  ctx.beginPath();
-  ctx.arc(logoX, logoY, logoRadius, 0, Math.PI*2);
-  ctx.fill();
-  ctx.fillStyle = "#2e7d32";
-  ctx.font = "28px sans-serif";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText("PLANT", logoX, logoY - 5);
-  ctx.font = "24px sans-serif";
-  ctx.fillText("🌿", logoX, logoY + 18);
-
-  // Plant Name
-  ctx.fillStyle = "#333";
-  ctx.font = "bold 32px sans-serif";
-  ctx.textAlign = "center";
-  ctx.fillText(plant.name, shareCanvas.width/2, cardY + 60);
-
-  // Score
-  ctx.font = "bold 48px sans-serif";
-  ctx.fillStyle = "#27ae60";
-  ctx.fillText(`${scoreDiv.textContent}`, shareCanvas.width/2, cardY + 140);
-
-  // Emoji
-  ctx.font = "48px sans-serif";
-  ctx.fillStyle = "#2c3e50";
-  ctx.fillText(`${emojiDiv.textContent}`, shareCanvas.width/2, cardY + 210);
-
-  // Humorous message
-  ctx.font = "italic 20px sans-serif";
-  ctx.fillStyle = "#d35400";
-  wrapText(ctx, getShareMessage(parseInt(scoreDiv.textContent)), shareCanvas.width/2, cardY + 300, 480, 26);
-
-  // Tip
-  ctx.font = "italic 18px sans-serif";
-  ctx.fillStyle = "#555";
-  wrapText(ctx, tipDiv.textContent, shareCanvas.width/2, cardY + 380, 440, 24);
-
-  // Water & Light Icons
-  ctx.font = "26px sans-serif";
-  ctx.fillStyle = "#2980b9";
-  ctx.fillText(`💧 ${plant.water}   ☀️ ${plant.light}`, shareCanvas.width/2, cardY + 450);
-
-  // Site URL bottom-right
-  ctx.font = "14px sans-serif";
-  ctx.fillStyle = "#777";
-  ctx.textAlign = "right";
-  ctx.fillText("https://nbzj4bq9sc-ship-it.github.io/Plants/", cardX + cardW - 10, cardY + cardH - 10);
-
-  shareCanvas.classList.add("hidden");
-}
-
-// Helper: Rounded rectangle
-function roundRect(ctx, x, y, width, height, radius, fill, stroke){
-  if (typeof stroke === 'undefined') stroke = true;
-  if (typeof radius === 'undefined') radius = 5;
-  if (typeof radius === 'number') {
-    radius = {tl: radius, tr: radius, br: radius, bl: radius};
-  } else {
-    var defaultRadius = {tl: 0, tr: 0, br: 0, bl: 0};
-    for (var side in defaultRadius) radius[side] = radius[side] || defaultRadius[side];
-  }
-  ctx.beginPath();
-  ctx.moveTo(x + radius.tl, y);
-  ctx.lineTo(x + width - radius.tr, y);
-  ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
-  ctx.lineTo(x + width, y + height - radius.br);
-  ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
-  ctx.lineTo(x + radius.bl, y + height);
-  ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
-  ctx.lineTo(x, y + radius.tl);
-  ctx.quadraticCurveTo(x, y, x + radius.tl, y);
-  ctx.closePath();
-  if (fill) ctx.fill();
-  if (stroke) ctx.stroke();
-}
-
-// Helper: wrap text for canvas
-function wrapText(context, text, x, y, maxWidth, lineHeight) {
-  var words = text.split(' ');
-  var line = '';
-  for(var n = 0; n < words.length; n++) {
-    var testLine = line + words[n] + ' ';
-    var metrics = context.measureText(testLine);
-    var testWidth = metrics.width;
-    if (testWidth > maxWidth && n > 0) {
-      context.fillText(line, x, y);
-      line = words[n] + ' ';
-      y += lineHeight;
-    } else {
-      line = testLine;
-    }
-  }
-  context.fillText(line, x, y);
-}
-
-// Calculate function unchanged
+// Calculate function
 function calculate() {
   const plant = plants[plantSelect.value];
   const userWater = parseInt(document.getElementById("water").value);
@@ -237,47 +94,31 @@ function calculate() {
   const userTemp = parseInt(document.getElementById("temperature").value);
 
   let score = 100;
-  let reason = "";
 
   const waterDiff = Math.abs(userWater - plant.water);
   const lightDiff = Math.abs(userLight - plant.light);
   const tempDiff = Math.abs(userTemp - plant.temp);
 
-  if (waterDiff > 0) {
-    score -= waterDiff * 20;
-    reason = userWater > plant.water ? "Too much water" : "Not enough water";
-  }
-
-  if (lightDiff > 0) {
-    score -= lightDiff * 15;
-    if (!reason) reason = userLight > plant.light ? "Too much light" : "Not enough light";
-  }
-
-  if (tempDiff > 5) {
-    score -= 15;
-    if (!reason) reason = "Temperature mismatch";
-  }
+  if (waterDiff > 0) score -= waterDiff * 20;
+  if (lightDiff > 0) score -= lightDiff * 15;
+  if (tempDiff > 5) score -= 15;
 
   score = Math.max(0, Math.min(100, score));
 
-  animateScore(score, reason);
-
+  animateScore(score);
   resultDiv.classList.remove("hidden");
 }
 
-// Share button
+// Share button: text + link only, fix double %
 shareBtn.addEventListener("click", () => {
   const plant = plants[plantSelect.value];
-  const score = scoreDiv.textContent;
-  const canvasData = shareCanvas.toDataURL("image/png");
-
-  const shareText = `${getShareMessage(parseInt(scoreDiv.textContent))}\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`;
+  const score = parseInt(scoreDiv.textContent); // remove double %
+  const shareText = `My ${plant.name} has a ${score}% chance of surviving a zombie apocalypse! 🧟\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`;
 
   if (navigator.share) {
     navigator.share({
       title: 'Will my plant survive?',
-      text: shareText,
-      files: [dataURLtoFile(canvasData, 'plant.png')],
+      text: shareText
     }).catch(err => console.log('Share cancelled', err));
   } else {
     navigator.clipboard.writeText(shareText).then(()=>{
@@ -285,11 +126,3 @@ shareBtn.addEventListener("click", () => {
     });
   }
 });
-
-// Helper: dataURL -> File
-function dataURLtoFile(dataurl, filename) {
-  let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-  bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-  while(n--){ u8arr[n] = bstr.charCodeAt(n); }
-  return new File([u8arr], filename, {type:mime});
-}
