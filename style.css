@@ -84,13 +84,13 @@ button:hover {
   transition: transform 0.5s;
 }
 
-.tip, .reason, .message {
+.tip, .message {
   opacity: 0;
   transform: translateY(10px);
   transition: all 0.5s ease;
 }
 
-.tip.show, .reason.show, .message.show {
+.tip.show, .message.show {
   opacity: 1;
   transform: translateY(0);
 }
@@ -127,7 +127,7 @@ button:hover {
 
 .credits {
   text-align: center;
-  font-size: 10px; /* plus petite police */
+  font-size: 10px;
   color: #777;
   margin-top: 10px;
 }
@@ -158,6 +158,6 @@ button:hover {
   animation: bounce 0.3s ease-in-out;
 }
 
-.message.fade-in, .reason.fade-in, .tip.fade-in, .share-btn.fade-in {
+.message.fade-in, .tip.fade-in, .share-btn.fade-in {
   animation: fadeIn 0.5s ease-in forwards;
 }
