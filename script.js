@@ -3,6 +3,7 @@ const resultDiv = document.getElementById("result");
 const scoreDiv = document.querySelector(".score");
 const messageDiv = document.querySelector(".message");
 const reasonDiv = document.querySelector(".reason");
+const tipDiv = document.querySelector(".tip");
 
 // Populate select
 plants.forEach((plant, index) => {
@@ -14,14 +15,15 @@ plants.forEach((plant, index) => {
 
 // Wording by percentage ranges
 function getMessage(score) {
-  if (score === 100) return "🌟 Perfect! This plant will thrive!";
-  if (score >= 75) return "🌿 You’re doing great!";
-  if (score >= 50) return "⚠️ Could be better, watch closely.";
-  if (score >= 25) return "☹️ Not looking good, be careful!";
-  if (score >= 10) return "💀 Danger zone, reconsider your choices.";
-  return "☠️ Deadly! This plant is doomed!";
+  if(score <= 10) return "☠️ This plant is doomed… maybe try another one!";
+  if(score <= 25) return "💀 Danger zone! Your plant needs serious attention.";
+  if(score <= 50) return "☹️ Not looking good. Adjust water or light.";
+  if(score <= 75) return "⚠️ Could be better. Keep an eye on it and tweak care.";
+  if(score <= 90) return "🌿 You’re doing well! Just minor tweaks needed.";
+  return "🌟 Perfect! This plant should thrive beautifully!";
 }
 
+// Animate score from 0 to target
 function animateScore(targetScore) {
   let current = 0;
   scoreDiv.textContent = "0%";
@@ -38,7 +40,7 @@ function calculate() {
   const userWater = parseInt(document.getElementById("water").value);
   const userLight = parseInt(document.getElementById("light").value);
 
-  let score = 80;
+  let score = 100; // Start at 100 to allow perfect score
   let reason = "";
 
   const waterDiff = Math.abs(userWater - plant.water);
@@ -62,6 +64,7 @@ function calculate() {
   // Set messages
   messageDiv.textContent = getMessage(score);
   reasonDiv.textContent = reason ? `Main issue: ${reason}` : "Nothing critical";
+  tipDiv.textContent = plant.tip;
 
   resultDiv.classList.remove("hidden");
 }
