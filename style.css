@@ -1,185 +1,98 @@
 body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #0f172a;
+  color: #e5e7eb;
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #f6f3ee;
-  color: #333;
+  padding: 0;
 }
 
-.app {
+.container {
   max-width: 420px;
   margin: auto;
   padding: 20px;
 }
 
 h1 {
-  text-align: center;
-  margin-bottom: 5px;
-  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.lang-btn {
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  font-size: 12px;
-  padding: 4px 6px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  background: #f0f0f0;
-  cursor: pointer;
-  z-index: 1000;
-}
-
-.lang-btn:hover {
-  background: #e0e0e0;
-}
-
-.lang-btn:hover {
-  background: #e0e0e0;
+.logo {
+  width: 32px;
+  height: 32px;
 }
 
 .subtitle {
-  text-align: center;
-  color: #666;
-  margin-bottom: 20px;
-}
-
-.card {
-  background: #fffaf2;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  font-size: 14px;
+  opacity: 0.8;
 }
 
 label {
   display: block;
-  margin-top: 15px;
-  font-weight: 500;
+  margin-top: 14px;
+  font-size: 14px;
 }
 
-select, input[type=range], button {
+input, select, button {
   width: 100%;
-  padding: 12px;
-  margin-top: 8px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  font-size: 16px;
-}
-
-input[type=range] {
-  padding: 0;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: none;
 }
 
 button {
-  margin-top: 20px;
-  background: #d8e2c8;
-  border: none;
-  font-weight: 600;
+  background: #2563eb;
+  color: white;
+  font-weight: bold;
   cursor: pointer;
-}
-
-button:hover {
-  background: #cddbb9;
-}
-
-.result {
-  margin-top: 20px;
-  background: #fff;
-  border-radius: 16px;
-  padding: 20px;
-  text-align: center;
 }
 
 .hidden {
   display: none;
 }
 
+.emoji {
+  font-size: 40px;
+  text-align: center;
+}
+
 .score {
   font-size: 36px;
-  font-weight: bold;
-  transition: all 0.5s ease;
+  text-align: center;
 }
 
-.emoji {
-  margin: 10px 0;
-  font-size: 48px;
-  transition: transform 0.5s;
-}
-
-.tip, .reason, .message {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.5s ease;
-}
-
-.tip.show, .reason.show, .message.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.tip {
+.message, .reason, .tip {
   margin-top: 10px;
-  font-style: italic;
-  color: #555;
-}
-
-/* Share button */
-.share-btn {
-  margin-top: 15px;
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  background: #cde2f0;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.share-btn:hover {
-  background: #b6d4e8;
+  font-size: 14px;
 }
 
 .disclaimer {
-  text-align: center;
   font-size: 12px;
-  color: #777;
+  opacity: 0.6;
   margin-top: 20px;
 }
 
 .credits {
-  text-align: center;
-  font-size: 10px; /* plus petite police */
-  color: #777;
+  font-size: 11px;
+  opacity: 0.4;
   margin-top: 10px;
 }
 
-/* Animations */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.3); }
-  100% { transform: scale(1); }
-}
-
-@keyframes bounce {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.score.pulse {
-  animation: pulse 0.5s ease-in-out;
-}
-
-.score.bounce {
-  animation: bounce 0.3s ease-in-out;
-}
-
-.message.fade-in, .reason.fade-in, .tip.fade-in, .share-btn.fade-in {
-  animation: fadeIn 0.5s ease-in forwards;
+/* ✅ LANG BUTTON FIX */
+.lang-btn {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
 }
