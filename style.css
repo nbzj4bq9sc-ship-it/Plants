@@ -1,32 +1,39 @@
-* {
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
-
 body {
-  background: #f6f8f7;
   margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f6f3ee;
+  color: #333;
+  position: relative;
 }
 
-.container {
+.lang-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  background: #4285f4;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.lang-btn:hover {
+  background: #357ae8;
+}
+
+.app {
   max-width: 420px;
+  margin: auto;
   padding: 20px;
-  margin-top: 40px;
-}
-
-.logo {
-  width: 28px;
-  vertical-align: middle;
-  margin-right: 8px;
 }
 
 h1 {
-  font-size: 26px;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .subtitle {
@@ -35,96 +42,119 @@ h1 {
   margin-bottom: 20px;
 }
 
+.card {
+  background: #fffaf2;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
 label {
   display: block;
   margin-top: 15px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
-input,
-select,
-button {
+select, input[type=range], button {
   width: 100%;
-  padding: 10px;
-  margin-top: 5px;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
   font-size: 16px;
 }
 
+input[type=range] {
+  padding: 0;
+}
+
 button {
-  background: #2f80ed;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
   margin-top: 20px;
+  background: #d8e2c8;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 button:hover {
-  opacity: 0.9;
+  background: #cddbb9;
 }
 
-#tempValue {
+.result {
+  margin-top: 20px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
   text-align: center;
-  margin-top: 5px;
-  font-weight: 600;
 }
 
 .hidden {
   display: none;
 }
 
-#result {
-  margin-top: 25px;
-  padding: 15px;
-  background: white;
-  border-radius: 8px;
-  text-align: center;
+.score {
+  font-size: 36px;
+  font-weight: bold;
+  transition: all 0.5s ease;
 }
 
 .emoji {
-  font-size: 40px;
+  margin: 10px 0;
+  font-size: 48px;
+  transition: transform 0.5s;
 }
 
-.score {
-  font-size: 22px;
-  font-weight: bold;
+.tip, .reason, .message {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s ease;
 }
 
-.message {
-  margin-top: 10px;
-}
-
-.reason {
-  margin-top: 10px;
-  color: #555;
+.tip.show, .reason.show, .message.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .tip {
   margin-top: 10px;
   font-style: italic;
+  color: #555;
 }
 
-.disclaimer,
-.credits {
-  font-size: 12px;
-  text-align: center;
-  margin-top: 20px;
-  color: #888;
-}
-
-/* ✅ LANG BUTTON FIXED */
-.lang-btn {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  width: 38px;
-  height: 38px;
-  background: #2f80ed;
-  color: white;
-  border-radius: 6px;
-  font-weight: bold;
-  font-size: 13px;
+.share-btn {
+  margin-top: 15px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
   border: none;
+  background: #cde2f0;
+  font-weight: 600;
   cursor: pointer;
-  z-index: 999;
+  font-size: 16px;
 }
+
+.share-btn:hover {
+  background: #b6d4e8;
+}
+
+.disclaimer {
+  text-align: center;
+  font-size: 12px;
+  color: #777;
+  margin-top: 20px;
+}
+
+.credits {
+  text-align: center;
+  font-size: 10px;
+  color: #777;
+  margin-top: 10px;
+}
+
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+@keyframes bounce { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.score.pulse { animation: pulse 0.5s ease-in-out; }
+.score.bounce { animation: bounce 0.3s ease-in-out; }
+.message.fade-in, .reason.fade-in, .tip.fade-in, .share-btn.fade-in { animation: fadeIn 0.5s ease-in forwards; }
