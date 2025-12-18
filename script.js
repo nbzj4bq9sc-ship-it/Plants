@@ -82,7 +82,7 @@ function animateScore(targetScore, reason) {
 
 // Mini tip by combination (independent of score)
 function getMiniTip(plant) {
-  return plant.tip; // original tip only
+  return plant.tip;
 }
 
 // Local history
@@ -93,33 +93,43 @@ function saveHistory(plantIndex, score){
   localStorage.setItem("plantHistory", JSON.stringify(history));
 }
 
+// Humorous message by score for share PNG
+function getShareMessage(score){
+  if(score <= 10) return "0% chance. This plant is already plotting against you!";
+  if(score <= 25) return "25% chance. Might survive a light drizzle of zombies...";
+  if(score <= 50) return "50% chance. Could survive a mild apocalypse!";
+  if(score <= 75) return "75% chance. Strong enough for a zombie weekend!";
+  if(score <= 90) return "90% chance. Nearly apocalypse-proof!";
+  return "100% chance. Survives even a zombie invasion!";
+}
+
 // Generate share image with logo
 function generateShareImage(){
   const ctx = shareCanvas.getContext("2d");
   shareCanvas.width = 600;
   shareCanvas.height = 600;
 
-  // Background gradient
+  // Background gradient pastel
   const grad = ctx.createLinearGradient(0,0,0,shareCanvas.height);
-  grad.addColorStop(0, "#f6f3ee");
-  grad.addColorStop(1, "#e2dfd5");
+  grad.addColorStop(0, "#fef6e4");
+  grad.addColorStop(1, "#e3f2e2");
   ctx.fillStyle = grad;
   ctx.fillRect(0,0,shareCanvas.width, shareCanvas.height);
 
   // Card with rounded corners and shadow
   const cardX = 50, cardY = 50, cardW = 500, cardH = 500;
-  ctx.fillStyle = "#fffaf2";
-  ctx.shadowColor = "rgba(0,0,0,0.1)";
+  ctx.fillStyle = "#ffffff";
+  ctx.shadowColor = "rgba(0,0,0,0.15)";
   ctx.shadowBlur = 15;
   ctx.shadowOffsetX = 0;
   ctx.shadowOffsetY = 5;
   roundRect(ctx, cardX, cardY, cardW, cardH, 20, true, false);
 
-  ctx.shadowColor = "transparent"; // reset shadow
+  ctx.shadowColor = "transparent";
 
   const plant = plants[plantSelect.value];
 
-  // Logo circle top-right
+  // Logo badge top-right
   const logoX = cardX + cardW - 50;
   const logoY = cardY + 50;
   const logoRadius = 30;
@@ -128,10 +138,12 @@ function generateShareImage(){
   ctx.arc(logoX, logoY, logoRadius, 0, Math.PI*2);
   ctx.fill();
   ctx.fillStyle = "#2e7d32";
-  ctx.font = "24px sans-serif";
+  ctx.font = "28px sans-serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText("🌿", logoX, logoY);
+  ctx.fillText("PLANT", logoX, logoY - 5);
+  ctx.font = "24px sans-serif";
+  ctx.fillText("🌿", logoX, logoY + 18);
 
   // Plant Name
   ctx.fillStyle = "#333";
@@ -141,19 +153,28 @@ function generateShareImage(){
 
   // Score
   ctx.font = "bold 48px sans-serif";
+  ctx.fillStyle = "#27ae60";
   ctx.fillText(`${scoreDiv.textContent}`, shareCanvas.width/2, cardY + 140);
 
   // Emoji
-  ctx.font = "64px sans-serif";
-  ctx.fillText(`${emojiDiv.textContent}`, shareCanvas.width/2, cardY + 230);
+  ctx.font = "48px sans-serif";
+  ctx.fillStyle = "#2c3e50";
+  ctx.fillText(`${emojiDiv.textContent}`, shareCanvas.width/2, cardY + 210);
 
-  // Water & Light Icons
-  ctx.font = "28px sans-serif";
-  ctx.fillText(`💧 ${plant.water}   ☀️ ${plant.light}`, shareCanvas.width/2, cardY + 300);
+  // Humorous message
+  ctx.font = "italic 20px sans-serif";
+  ctx.fillStyle = "#d35400";
+  wrapText(ctx, getShareMessage(parseInt(scoreDiv.textContent)), shareCanvas.width/2, cardY + 300, 480, 26);
 
   // Tip
-  ctx.font = "italic 20px sans-serif";
-  wrapText(ctx, tipDiv.textContent, shareCanvas.width/2, cardY + 380, 440, 26);
+  ctx.font = "italic 18px sans-serif";
+  ctx.fillStyle = "#555";
+  wrapText(ctx, tipDiv.textContent, shareCanvas.width/2, cardY + 380, 440, 24);
+
+  // Water & Light Icons
+  ctx.font = "26px sans-serif";
+  ctx.fillStyle = "#2980b9";
+  ctx.fillText(`💧 ${plant.water}   ☀️ ${plant.light}`, shareCanvas.width/2, cardY + 450);
 
   // Site URL bottom-right
   ctx.font = "14px sans-serif";
@@ -244,13 +265,13 @@ function calculate() {
   resultDiv.classList.remove("hidden");
 }
 
-// Share button unchanged
+// Share button
 shareBtn.addEventListener("click", () => {
   const plant = plants[plantSelect.value];
-  const score = scoreDiv.textContent; 
+  const score = scoreDiv.textContent;
   const canvasData = shareCanvas.toDataURL("image/png");
 
-  const shareText = `My ${plant.name} has a ${score}% chance of survival! 🌿\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`;
+  const shareText = `${getShareMessage(parseInt(scoreDiv.textContent))}\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`;
 
   if (navigator.share) {
     navigator.share({
