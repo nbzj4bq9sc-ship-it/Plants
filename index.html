@@ -10,45 +10,47 @@
 
   <button id="langBtn" class="lang-btn">FR</button>
 
-  <div class="container">
+  <div class="app">
     <h1 id="title">
-      <img src="logo.svg" class="logo" alt="logo">
-      Will my plant survive?
+      <img src="logo.svg" class="logo" alt="logo"> Will my plant survive?
     </h1>
-
     <p id="subtitle" class="subtitle">
       A quick estimation. Be honest. We will.
     </p>
 
-    <label id="labelPlant">Plant</label>
-    <select id="plantSelect"></select>
+    <div class="card">
+      <label id="labelPlant">Plant</label>
+      <select id="plantSelect"></select>
 
-    <label id="labelWater">Watering (times per week)</label>
-    <input type="number" id="water" min="0" max="14" value="1" />
+      <label id="labelWater">Watering (times per week)</label>
+      <select id="water">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3+</option>
+      </select>
 
-    <label id="labelLight">Light</label>
-    <select id="light">
-      <option value="1">Low</option>
-      <option value="2">Medium</option>
-      <option value="3">Bright</option>
-    </select>
+      <label id="labelLight">Light</label>
+      <select id="light">
+        <option value="1">Low light</option>
+        <option value="2">Medium light</option>
+        <option value="3">Bright light</option>
+      </select>
 
-    <label id="labelTemp">Temperature (°C)</label>
-    <input type="range" id="temperature" min="5" max="35" value="20" />
-    <div id="tempValue">20°C</div>
+      <label id="labelTemp">Temperature (°C)</label>
+      <input type="range" min="10" max="35" value="22" id="temperature" />
+      <span id="tempValue">22°C</span>
 
-    <button id="calculateBtn" onclick="calculate()">Face the truth</button>
+      <button id="calculateBtn">Face the truth</button>
+    </div>
 
-    <div id="result" class="hidden">
-      <div class="emoji"></div>
-      <div class="score"></div>
-      <div class="message"></div>
-      <div class="reason"></div>
-      <div class="tip"></div>
-
-      <button id="shareBtn" class="hidden">
-        Share my plant skills 😎
-      </button>
+    <div id="result" class="result hidden">
+      <div class="score">0%</div>
+      <div class="emoji" style="font-size:48px;">🌿</div>
+      <p class="message"></p>
+      <p class="reason"></p>
+      <p class="tip"></p>
+      <button id="shareBtn" class="share-btn hidden">Share my plant skills 😎</button>
     </div>
 
     <p id="disclaimer" class="disclaimer">
