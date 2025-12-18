@@ -31,15 +31,22 @@
         <option value="3">Bright light</option>
       </select>
 
+      <label>Temperature (°C)</label>
+      <input type="range" min="10" max="35" value="22" id="temperature" />
+
+      <span id="tempValue">22°C</span>
+
       <button onclick="calculate()">Face the truth</button>
     </div>
 
     <div id="result" class="result hidden">
       <div class="score">0%</div>
+      <div class="emoji" style="font-size: 48px;">🌿</div>
       <p class="message"></p>
       <p class="reason"></p>
       <p class="tip"></p>
       <button id="shareBtn" class="share-btn hidden">Share my plant skills 😎</button>
+      <canvas id="shareCanvas" class="hidden"></canvas>
     </div>
 
     <p class="disclaimer">
