@@ -93,20 +93,20 @@ function saveHistory(plantIndex, score){
   localStorage.setItem("plantHistory", JSON.stringify(history));
 }
 
-// Generate share image
+// Generate share image with logo
 function generateShareImage(){
   const ctx = shareCanvas.getContext("2d");
   shareCanvas.width = 600;
   shareCanvas.height = 600;
 
-  // Dégradé pastel de fond
+  // Background gradient
   const grad = ctx.createLinearGradient(0,0,0,shareCanvas.height);
   grad.addColorStop(0, "#f6f3ee");
   grad.addColorStop(1, "#e2dfd5");
   ctx.fillStyle = grad;
   ctx.fillRect(0,0,shareCanvas.width, shareCanvas.height);
 
-  // Carte avec bord arrondi et shadow
+  // Card with rounded corners and shadow
   const cardX = 50, cardY = 50, cardW = 500, cardH = 500;
   ctx.fillStyle = "#fffaf2";
   ctx.shadowColor = "rgba(0,0,0,0.1)";
@@ -115,10 +115,23 @@ function generateShareImage(){
   ctx.shadowOffsetY = 5;
   roundRect(ctx, cardX, cardY, cardW, cardH, 20, true, false);
 
-  // Reset shadow for text
-  ctx.shadowColor = "transparent";
+  ctx.shadowColor = "transparent"; // reset shadow
 
   const plant = plants[plantSelect.value];
+
+  // Logo circle top-right
+  const logoX = cardX + cardW - 50;
+  const logoY = cardY + 50;
+  const logoRadius = 30;
+  ctx.fillStyle = "#d4e9d4";
+  ctx.beginPath();
+  ctx.arc(logoX, logoY, logoRadius, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = "#2e7d32";
+  ctx.font = "24px sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("🌿", logoX, logoY);
 
   // Plant Name
   ctx.fillStyle = "#333";
@@ -142,7 +155,7 @@ function generateShareImage(){
   ctx.font = "italic 20px sans-serif";
   wrapText(ctx, tipDiv.textContent, shareCanvas.width/2, cardY + 380, 440, 26);
 
-  // Site logo / url en bas droit
+  // Site URL bottom-right
   ctx.font = "14px sans-serif";
   ctx.fillStyle = "#777";
   ctx.textAlign = "right";
@@ -195,7 +208,7 @@ function wrapText(context, text, x, y, maxWidth, lineHeight) {
   context.fillText(line, x, y);
 }
 
-// Calculate
+// Calculate function unchanged
 function calculate() {
   const plant = plants[plantSelect.value];
   const userWater = parseInt(document.getElementById("water").value);
@@ -219,7 +232,7 @@ function calculate() {
     if (!reason) reason = userLight > plant.light ? "Too much light" : "Not enough light";
   }
 
-  if (tempDiff > 5) { // penalty for temp mismatch
+  if (tempDiff > 5) {
     score -= 15;
     if (!reason) reason = "Temperature mismatch";
   }
@@ -231,13 +244,13 @@ function calculate() {
   resultDiv.classList.remove("hidden");
 }
 
-// Share button
+// Share button unchanged
 shareBtn.addEventListener("click", () => {
   const plant = plants[plantSelect.value];
-  const score = scoreDiv.textContent; // no double %
+  const score = scoreDiv.textContent; 
   const canvasData = shareCanvas.toDataURL("image/png");
 
-  const shareText = `My ${plant.name} has a ${score} chance of survival! 🌿\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`;
+  const shareText = `My ${plant.name} has a ${score}% chance of survival! 🌿\nhttps://nbzj4bq9sc-ship-it.github.io/Plants/`;
 
   if (navigator.share) {
     navigator.share({
