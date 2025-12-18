@@ -8,21 +8,15 @@
 </head>
 <body>
 
-  <button id="langBtn" class="lang-btn">FR</button>
-
   <div class="app">
-    <h1 id="title">
-      <img src="logo.svg" class="logo" alt="logo"> Will my plant survive?
-    </h1>
-    <p id="subtitle" class="subtitle">
-      A quick estimation. Be honest. We will.
-    </p>
+    <h1>🌱 Will my plant survive?</h1>
+    <p class="subtitle">A quick estimation. Be honest. We will.</p>
 
     <div class="card">
-      <label id="labelPlant">Plant</label>
+      <label>Plant</label>
       <select id="plantSelect"></select>
 
-      <label id="labelWater">Watering (times per week)</label>
+      <label>Watering (times per week)</label>
       <select id="water">
         <option value="0">0</option>
         <option value="1">1</option>
@@ -30,34 +24,35 @@
         <option value="3">3+</option>
       </select>
 
-      <label id="labelLight">Light</label>
+      <label>Light</label>
       <select id="light">
         <option value="1">Low light</option>
         <option value="2">Medium light</option>
         <option value="3">Bright light</option>
       </select>
 
-      <label id="labelTemp">Temperature (°C)</label>
+      <label>Temperature (°C)</label>
       <input type="range" min="10" max="35" value="22" id="temperature" />
+
       <span id="tempValue">22°C</span>
 
-      <button id="calculateBtn">Face the truth</button>
+      <button onclick="calculate()">Face the truth</button>
     </div>
 
     <div id="result" class="result hidden">
       <div class="score">0%</div>
-      <div class="emoji" style="font-size:48px;">🌿</div>
+      <div class="emoji" style="font-size: 48px;">🌿</div>
       <p class="message"></p>
       <p class="reason"></p>
       <p class="tip"></p>
       <button id="shareBtn" class="share-btn hidden">Share my plant skills 😎</button>
     </div>
 
-    <p id="disclaimer" class="disclaimer">
+    <p class="disclaimer">
       Not science. Just experience. Plants sometimes have personality.
     </p>
 
-    <p id="credits" class="credits">
+    <p class="credits">
       Created by Romain Daney. Inspired by houseplant care guides. 🌱
     </p>
   </div>
